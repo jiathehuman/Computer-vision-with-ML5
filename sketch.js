@@ -21,10 +21,11 @@ var greyscaleImg;
 var redSegmentImg;
 var greenSegmentImg;
 var blueSegmentImg;
+var hsvImg;
+var ycbcrImg;
 
-var segmentationRSlider, segmentationGSlider, segmentationBSlider 
-
-var segmentationRVal, segmentationGVal, segmentationBVal
+var segmentationRSlider, segmentationGSlider, segmentationBSlider; 
+var segmentationRVal, segmentationGVal, segmentationBVal;
 
 var detector;
 var classifier = objectdetect.frontalface;
@@ -46,13 +47,10 @@ function setup() {
     webcam_stream.size(imgWidth, imgHeight);
 
     segmentationRSlider = createSlider(0, 255, 100);
-    // segmentationRSlider.position(50, imgHeight * 5 + 20)
 
     segmentationGSlider = createSlider(0, 255, 100);
-    // segmentationGSlider.position(50, imgHeight * 5 + 40)
 
     segmentationBSlider = createSlider(0, 255, 100);
-    // segmentationBSlider.position(50, imgHeight * 5 + 60)
 
     segmentationRSlider.parent("redslider");
     segmentationGSlider.parent("greenslider");
@@ -91,21 +89,34 @@ function draw() {
         blueSegmentImg = createImage(imgWidth, imgHeight); 
         blueSegmentImg = channelSegmentation(img, "blue");
 
+        // colorMode(HSB,255);
+        hsvImg = createImage(imgWidth, imgHeight);
+        hsvImg = rgbToHSV(img);
+
+        ycbcrImg = createImage(imgWidth, imgHeight);
+        ycbcrImg = rgbToYCBCR(img);
 
 
+        colorMode(RGB)
         image(img, 0, 0);
         image(greyscaleImg, imgWidth, 0);
         image(redImg, 0, imgHeight);
         image(greenImg, imgWidth, imgHeight);
         image(blueImg, imgWidth * 2, imgHeight);
-
-
         image(redSegmentImg, 0, imgHeight * 2);
         image(greenSegmentImg, imgWidth, imgHeight * 2);
         image(blueSegmentImg, imgWidth * 2, imgHeight * 2);
 
-    }
+        image(img, 0, imgHeight * 3);
 
+        colorMode(HSB) 
+        image(hsvImg, imgWidth, imgHeight * 3);
+
+        // image(hsvImg, imgWidth, imgHeight * 3);
+        // noLoop();
+
+    }
+   
 }
 
 function keyPressed()
@@ -245,6 +256,101 @@ function channelSegmentation(img, channel){
     imgOut.updatePixels();
     return imgOut;
 }
+
+// // reference: https://gist.github.com/avisek/eadfbe7a7a169b1001a2d3affc21052e
+// function rgbToHSV(img)
+// {
+//     var imgOut = createImage(img.width, img.height);
+//     imgOut.loadPixels();
+//     img.loadPixels();
+
+//     for (x = 0; x < imgOut.width; x++) {
+//         for (y = 0; y < imgOut.height; y++) {
+
+//             var index = (x + y * imgOut.width) * 4;
+
+//             var r = img.pixels[index + 0];
+//             var g = img.pixels[index + 1];
+//             var b = img.pixels[index + 2]; 
+
+//             r /= 255, g/=255, b/=255; // divide all by 255 to normalise
+//             var rPrime, gPrime, bPrime, hue;
+
+//             var max = Math.max(r,g,b);
+//             var min = Math.min(r,g,b);
+//             const diff = max - min;
+
+//             var saturation = diff / max;
+//             var value = max;
+
+//             rPrime = (max - r)/ diff;
+//             gPrime = (max - g)/ diff;
+//             bPrime = (max - b)/ diff;
+
+//             if(saturation == 0) hue = 0;
+//             else if(r == max && g == min) hue = 5 + bPrime;
+//             else if(r==max && g!= min) hue = 1 - gPrime;
+//             else if(g==max && b == min) hue = rPrime + 1;
+//             else if(g==max && b != min) hue = 3 - bPrime;
+//             else if(r == max) hue = 3 + gPrime;
+//             else hue = 5 - rPrime;
+
+//             hue = hue * 60;
+
+//             // convert back to rgb
+//             var hex = hue / 60
+//             var primaryColour = Math.floor(hex);
+//             var secondaryColour = 1 - primaryColour;
+
+//             var a = (1 - saturation) * value;
+//             var b = (1-(saturation * secondaryColour)) * value;
+//             var c = (1-(saturation * (1 - secondaryColour))) * value;
+
+//             var convertedR, convertedG, convertedB
+
+//             switch(primaryColour){
+//                 case 0: 
+//                     convertedR = value;
+//                     convertedG = c;
+//                     convertedB = a;
+//                 case 1: 
+//                     convertedR = b;
+//                     convertedG = value;
+//                     convertedB = a;
+//                 case 2: 
+//                     convertedR = a;
+//                     convertedG = value;
+//                     convertedB = c;
+//                 case 3: 
+//                     convertedR = a;
+//                     convertedG = b;
+//                     convertedB = value;
+//                 case 4: 
+//                     convertedR = c;
+//                     convertedG = a;
+//                     convertedB = value;
+//                 case 5: 
+//                     convertedR = value;
+//                     convertedG = a;
+//                     convertedB = b;
+                
+//             }
+
+//             imgOut.pixels[index + 0] = convertedR * 255;
+//             imgOut.pixels[index + 1] = convertedG * 255;
+//             imgOut.pixels[index + 2] = convertedB * 255;
+//             imgOut.pixels[index + 3] = 255;
+
+//             // imgOut.pixels[index + 0] = hue;
+//             // imgOut.pixels[index + 1] = saturation;
+//             // imgOut.pixels[index + 2] = value;
+//             // imgOut.pixels[index + 3] = 200;
+//             console.log(convertedR, convertedG, convertedB)
+//             }
+//         }
+//     imgOut.updatePixels();
+//     return imgOut;
+// }
 
 
 // Coursera
