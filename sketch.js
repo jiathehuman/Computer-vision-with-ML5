@@ -24,6 +24,9 @@ var blueSegmentImg;
 var hsvImg;
 var ycbcrImg;
 
+var hsvSegmentedImg;
+var ycbcrSegmentedImg;
+
 var segmentationRSlider, segmentationGSlider, segmentationBSlider; 
 var segmentationRVal, segmentationGVal, segmentationBVal;
 
@@ -96,6 +99,11 @@ function draw() {
         ycbcrImg = createImage(imgWidth, imgHeight);
         ycbcrImg = rgbToYCBCR(img);
 
+        hsvSegmentedImg = createImage(imgWidth, imgHeight);
+        hsvSegmentedImg = thresholdFilter(hsvImg);
+        ycbcrSegmentedImg = createImage(imgWidth, imgHeight);
+        ycbcrSegmentedImg = thresholdFilter(ycbcrImg);
+
 
         colorMode(RGB)
         image(img, 0, 0);
@@ -108,12 +116,14 @@ function draw() {
         image(blueSegmentImg, imgWidth * 2, imgHeight * 2);
 
         image(img, 0, imgHeight * 3);
-
-        colorMode(HSB) 
         image(hsvImg, imgWidth, imgHeight * 3);
+        image(ycbcrImg, imgWidth * 2, imgHeight * 3);
+
+        image(hsvSegmentedImg, imgWidth, imgHeight * 4);
+        image(ycbcrSegmentedImg, imgWidth * 2, imgHeight * 4);
 
         // image(hsvImg, imgWidth, imgHeight * 3);
-        // noLoop();
+        noLoop();
 
     }
    

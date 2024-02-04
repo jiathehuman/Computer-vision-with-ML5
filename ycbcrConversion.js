@@ -13,86 +13,25 @@ function rgbToYCBCR(img)
             var g = img.pixels[index + 1];
             var b = img.pixels[index + 2]; 
 
-            r /= 255, g/=255, b/=255; // divide all by 255 to normalise
-            var rPrime, gPrime, bPrime, hue;
+            // r /= 255, g /=255, b /=255; // divide all by 255 to normalise
 
-            var max = Math.max(r,g,b);
-            var min = Math.min(r,g,b);
-            const diff = max - min;
+            var yPrime, Cb, Cr;
 
-            var saturation = diff / max;
-            var value = max;
+            yPrime = 0.299 * r + 0.587 * g + 0.114 * b;
+            Cb = 128 -0.169 * r - 0.331 * g + 0.5 * b;
+            Cr = 128 + 0.500 * r - 0.419 * g - 0.081 * b;
 
-            rPrime = (max - r)/ diff;
-            gPrime = (max - g)/ diff;
-            bPrime = (max - b)/ diff;
+            // 10.5 ITU.BT-709 HDTV studio production in Y'CbCr
 
-            if(saturation == 0) hue = 0;
-            else if(r == max && g == min) hue = 5 + bPrime;
-            else if(r==max && g!= min) hue = 1 - gPrime;
-            else if(g==max && b == min) hue = rPrime + 1;
-            else if(g==max && b != min) hue = 3 - bPrime;
-            else if(r == max) hue = 3 + gPrime;
-            else hue = 5 - rPrime;
+            
 
-            hue = hue * 60;
-
-             // convert back to rgb
-            var hex = hue / 60
-            var primaryColour = Math.floor(hex);
-            var secondaryColour = 1 - primaryColour;
-
-            var a = (1 - saturation) * value;
-            var b = (1-(saturation * secondaryColour)) * value;
-            var c = (1-(saturation * (1 - secondaryColour))) * value;
-
-            var convertedR, convertedG, convertedB
-
-            switch(primaryColour){
-                case 0: 
-                    convertedR = value;
-                    convertedG = c;
-                    convertedB = a;
-                case 1: 
-                    convertedR = b;
-                    convertedG = value;
-                    convertedB = a;
-                case 2: 
-                    convertedR = a;
-                    convertedG = value;
-                    convertedB = c;
-                case 3: 
-                    convertedR = a;
-                    convertedG = b;
-                    convertedB = value;
-                case 4: 
-                    convertedR = c;
-                    convertedG = a;
-                    convertedB = value;
-                case 5: 
-                    convertedR = value;
-                    convertedG = a;
-                    convertedB = b;
-                
-            }
-
-            imgOut.pixels[index + 0] = convertedR * 255;
-            imgOut.pixels[index + 1] = convertedG * 255;
-            imgOut.pixels[index + 2] = convertedB * 255;
+            // 16 to 235 for y', 16 ro 240 doe Cb and Cr
+            imgOut.pixels[index + 0] = yPrime;
+            imgOut.pixels[index + 1] = Cb;
+            imgOut.pixels[index + 2] = Cr;
             imgOut.pixels[index + 3] = 255;
 
-            // imgOut.pixels[index + 0] = hue;
-            // imgOut.pixels[index + 1] = hue;
-            // imgOut.pixels[index + 2] = saturation;
-            // imgOut.pixels[index + 3] = value;
-            // imgOut.pixels[index + 3] = 100; 
-
-            // imgOut.pixels[index + 0] = hue;
-            // imgOut.pixels[index + 1] = saturation;
-            // imgOut.pixels[index + 2] = value;
-            // imgOut.pixels[index + 3] = hue;
-            // console.log(convertedR, convertedG, convertedB)
-
+            console.log(yPrime, Cb, Cr)
             }
         }
     imgOut.updatePixels();

@@ -15,7 +15,7 @@ function rgbToHSV(img)
             var g = img.pixels[index + 1];
             var b = img.pixels[index + 2]; 
 
-            r /= 255, g/=255, b/=255; // divide all by 255 to normalise
+            // r /= 255, g/=255, b/=255; // divide all by 255 to normalise
             var rPrime, gPrime, bPrime, hue;
 
             var max = Math.max(r,g,b);
@@ -29,6 +29,7 @@ function rgbToHSV(img)
             gPrime = (max - g)/ diff;
             bPrime = (max - b)/ diff;
 
+            // to calculate the hue
             if(saturation == 0) hue = 0;
             else if(r == max && g == min) hue = 5 + bPrime;
             else if(r==max && g!= min) hue = 1 - gPrime;
@@ -36,17 +37,14 @@ function rgbToHSV(img)
             else if(g==max && b != min) hue = 3 - bPrime;
             else if(r == max) hue = 3 + gPrime;
             else hue = 5 - rPrime;
+
             hue = hue * 60;
-            
+
             // hue is 0 to 360, value and saturation are 0 to 100
             imgOut.pixels[index + 1] = hue;
-            imgOut.pixels[index + 2] = saturation * 100;
-            imgOut.pixels[index + 3] = value * 100;
+            imgOut.pixels[index + 2] = saturation;
+            imgOut.pixels[index + 3] = value;
             imgOut.pixels[index + 4] = 255;
-
-            // console.log(hue, saturation * 100, value * 100);
-
-
 
 
 
