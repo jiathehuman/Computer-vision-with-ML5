@@ -35,16 +35,23 @@ var classifier = objectdetect.frontalface;
 
 var faces;
 var imageLoaded = false;
+var testImg;
 
 ////////////////////////////////////////////////////////////////
 function preload(){
-
+    img = loadImage("assets/face2.jpg");
 }
 ////////////////////////////////////////////////////////////////
 function setup() {
     const canvas = createCanvas(imgWidth * 3, imgHeight * 5);
+    pixelDensity(1);
     canvas.parent("canvas");
     pixelDensity(1); // makes sure it renders correctly on different screens
+
+    var scaleFactor = 1
+    var classifier = objectdetect.frontalface;
+    detector = new objectdetect.detector(width, height, scaleFactor, classifier);
+
     webcam_stream = createCapture(VIDEO);
     webcam_stream.hide();
     webcam_stream.size(imgWidth, imgHeight);
@@ -68,6 +75,8 @@ function draw() {
     segmentationRVal = segmentationRSlider.value()
     segmentationGVal = segmentationGSlider.value()
     segmentationBVal = segmentationBSlider.value()
+
+
 
     if(imageLoaded)
     {
@@ -104,28 +113,33 @@ function draw() {
         ycbcrSegmentedImg = createImage(imgWidth, imgHeight);
         ycbcrSegmentedImg = thresholdFilter(ycbcrImg);
 
+        faceImg = createImage(imgWidth, imgHeight);
+        faceImg = detectFilter(img);
 
         colorMode(RGB)
         image(img, 0, 0);
         image(greyscaleImg, imgWidth, 0);
-        image(redImg, 0, imgHeight);
-        image(greenImg, imgWidth, imgHeight);
-        image(blueImg, imgWidth * 2, imgHeight);
-        image(redSegmentImg, 0, imgHeight * 2);
-        image(greenSegmentImg, imgWidth, imgHeight * 2);
-        image(blueSegmentImg, imgWidth * 2, imgHeight * 2);
+        // image(redImg, 0, imgHeight);
+        // image(greenImg, imgWidth, imgHeight);
+        // image(blueImg, imgWidth * 2, imgHeight);
+        // image(redSegmentImg, 0, imgHeight * 2);
+        // image(greenSegmentImg, imgWidth, imgHeight * 2);
+        // image(blueSegmentImg, imgWidth * 2, imgHeight * 2);
 
-        image(img, 0, imgHeight * 3);
-        image(hsvImg, imgWidth, imgHeight * 3);
-        image(ycbcrImg, imgWidth * 2, imgHeight * 3);
+        // image(img, 0, imgHeight * 3);
+        // image(hsvImg, imgWidth, imgHeight * 3);
+        // image(ycbcrImg, imgWidth * 2, imgHeight * 3);
 
-        image(hsvSegmentedImg, imgWidth, imgHeight * 4);
-        image(ycbcrSegmentedImg, imgWidth * 2, imgHeight * 4);
+        // image(hsvSegmentedImg, imgWidth, imgHeight * 4);
+        // image(ycbcrSegmentedImg, imgWidth * 2, imgHeight * 4);
 
         // image(hsvImg, imgWidth, imgHeight * 3);
-        noLoop();
+        image(faceImg, 0, imgHeight * 4);
 
+        noLoop();
     }
+
+    // noLoop();
    
 }
 

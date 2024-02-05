@@ -30,8 +30,6 @@ function rgbToYCBCR(img)
             imgOut.pixels[index + 1] = Cb;
             imgOut.pixels[index + 2] = Cr;
             imgOut.pixels[index + 3] = 255;
-
-            console.log(yPrime, Cb, Cr)
             }
         }
     imgOut.updatePixels();
