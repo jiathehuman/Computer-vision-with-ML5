@@ -8,11 +8,11 @@ function detectFilter(img) {
   faces = detector.detect(imgOut.canvas);
 //   console.log("detect filter is called");
 
-  console.log(faces.length);
+  // console.log(faces.length);
 
   for (var i = 0; i < faces.length; i++) {
     var face = faces[i];
-    if (face[4] > 4) {
+    if (face[4] > 5) {
       var startX = int(face[0]);
       var startY = int(face[1]);
       var fwidth = int(face[2]);
@@ -26,10 +26,15 @@ function detectFilter(img) {
           var pixelIndex = (imgOut.width * y + x) * 4;
 
           // white box over face
-          imgOut.pixels[pixelIndex + 0] = 255;
-          imgOut.pixels[pixelIndex + 1] = 255;
-          imgOut.pixels[pixelIndex + 2] = 0;
-          imgOut.pixels[pixelIndex + 3] = 255;
+          // imgOut.pixels[pixelIndex + 0] = 255;
+          // imgOut.pixels[pixelIndex + 1] = 255;
+          // imgOut.pixels[pixelIndex + 2] = 0;
+          // imgOut.pixels[pixelIndex + 3] = 255;
+
+          imgOut.pixels[pixelIndex + 0] = img.pixels[pixelIndex + 0];
+          imgOut.pixels[pixelIndex + 1] = img.pixels[pixelIndex + 1];
+          imgOut.pixels[pixelIndex + 2] = img.pixels[pixelIndex + 2];       
+          imgOut.pixels[pixelIndex + 3] = img.pixels[pixelIndex + 3];
         }
         // console.log("this");
       }

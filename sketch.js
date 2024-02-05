@@ -141,6 +141,7 @@ function draw() {
         // RMB NOT TO DELETE ----------------------------------------------------------------
 
         image(faceImg, 0, imgHeight * 4);
+        
         if(count > 2)
         {
             noLoop(); // make sure it does not crash
