@@ -47,8 +47,8 @@ function rgbToHSV(img)
             imgOut.pixels[index + 4] = 255;
 
 
-
-             // convert back to rgb
+            // RMB NOT TO DELETE BELOW, CAN USE FOR EXTENSION - convert back to rgb
+            // convert back to rgb
             // var hex = hue / 60
             // var primaryColour = Math.floor(hex);
             // var secondaryColour = 1 - primaryColour;
