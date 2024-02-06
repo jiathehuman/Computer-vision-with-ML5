@@ -28,7 +28,7 @@ var hsvSegmentedImg;
 var ycbcrSegmentedImg;
 
 var segmentationRSlider, segmentationGSlider, segmentationBSlider; 
-var segmentationRVal, segmentationGVal, segmentationBVal, selectFilterVal
+var segmentationRVal, segmentationGVal, segmentationBVal, selectFilterVal, pixelSize
 
 var detector;
 var classifier = objectdetect.frontalface;
@@ -66,10 +66,12 @@ function setup() {
     segmentationRSlider = createSlider(0, 255, 100);
     segmentationGSlider = createSlider(0, 255, 100);
     segmentationBSlider = createSlider(0, 255, 100);
+    pixelSlider = createSlider(2, 10, 5);
 
     segmentationRSlider.parent("redslider");
     segmentationGSlider.parent("greenslider");
     segmentationBSlider.parent("blueslider");
+    pixelSlider.parent("pixelslider")
 
     faceFilterSel = createSelect();
     faceFilterSel.position(imgWidth * 3 + 20, imgHeight);
@@ -98,9 +100,7 @@ function gotFaces(error, results){
         console.log(error);
         return;
     }
-    console.log("got faces is called");
         detections = results;
-        // faceapi.detect(gotFaces); // continuously obtain RT data
 }
 
 ///////////////////////////////////////////////////////////////
@@ -115,6 +115,7 @@ function draw() {
     segmentationGVal = segmentationGSlider.value();
     segmentationBVal = segmentationBSlider.value();
     selectFilterVal = faceFilterSel.value();
+    pixelSize = pixelSlider.value();
 
 
 

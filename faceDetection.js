@@ -70,8 +70,6 @@ function detectFaceFilter(img,faceX, faceY, faceWidth, faceHeight){
     var fwidth = int(faceWidth);
     var fheight = int(faceHeight);
 
-    console.log(startX, startY, fwidth, fheight);
-
 
     for (x = 0; x < imgOut.width; x++) {
 
@@ -182,7 +180,7 @@ function detectFaceFilter(img,faceX, faceY, faceWidth, faceHeight){
     }
 
     if(selectFilterVal == "pixelate"){
-        var pixelatedSize = 5;
+        let pixelatedSize = pixelSize;
         for(var y = startY; y < startY + fheight ;y += pixelatedSize){
             for(var x=startX; x< startX + fwidth ;x += pixelatedSize){
     
@@ -193,27 +191,25 @@ function detectFaceFilter(img,faceX, faceY, faceWidth, faceHeight){
                 //get the sum of RGB of that block
                 for(var i=0;i<pixelatedSize;i++){
                     for(var j=0;j<pixelatedSize;j++){
-                        var pixelIndex = ((img.width * (y+j)) + (x+i))*4;
-                        var pixelRed = img.pixels[pixelIndex + 0];
-                        var pixelGreen = img.pixels[pixelIndex + 1];
-                        var pixelBlue = img.pixels[pixelIndex + 2];
-                        sumRed+=pixelRed;
-                        sumGreen+=pixelGreen;
-                        sumBlue+=pixelBlue;
+                        var pixelColour = img.get((x+i),(y+j))
+                        var r = pixelColour[0]
+                        var g = pixelColour[1]
+                        var b = pixelColour[2]
+                        sumRed   += r;
+                        sumGreen += g;
+                        sumBlue  += b;
                     }
                 }
                 //calcualte the ave of RGB of that block
                 var aveRed = sumRed/(pixelatedSize*pixelatedSize);
                 var aveGreen = sumGreen/(pixelatedSize*pixelatedSize);
                 var aveBlue = sumBlue/(pixelatedSize*pixelatedSize);
-                
+                var avgColour = color(aveRed,aveGreen,aveBlue)
                 //paint the block with the ave RGB value
                 for(var i=0;i<pixelatedSize;i++){
                     for(var j=0;j<pixelatedSize;j++){
                         var pixelIndex = ((img.width * (y+j)) + (x+i)) *4;
-                        imgOut.pixels[pixelIndex + 0] = aveRed;
-                        imgOut.pixels[pixelIndex + 1] = aveGreen;
-                        imgOut.pixels[pixelIndex + 2] = aveBlue;
+                        imgOut.set((x+i),(y+j),avgColour)
                     }
                 }
             }
