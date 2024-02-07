@@ -14,8 +14,6 @@ function Filter(){
                 var r = img.pixels[index + 0];
                 var g = img.pixels[index + 1];
                 var b = img.pixels[index + 2];
-    
-                // var processedPixel = greyscaleFilter(r,g,b, filterName);
 
                 var processedPixel = this.applyFilter(r,g,b,filterName)
 
@@ -31,7 +29,6 @@ function Filter(){
     }
 
     this.applyFilter = function(r,g,b, filterName){
-        // if(filterName == 'greyscale') return greyscaleFilter(r,g,b)
         var processedPixel
         if(filterName == 'greyscale') processedPixel = greyscaleFilter(r,g,b);
         if(filterName == 'redChannel') processedPixel = channel(r,g,b, 'red');
@@ -43,7 +40,6 @@ function Filter(){
         if(filterName == 'hsvColour') processedPixel = rgbToHSV(r,g,b);
         if(filterName == 'ycbcrColour') processedPixel = rgbToYCBCR(r,g,b);
         if(filterName == 'threshold') processedPixel = thresholdFilter(r,g,b);
-
         return processedPixel;
     }
 

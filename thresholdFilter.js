@@ -4,9 +4,13 @@ function thresholdFilter(r,g,b){
     var threshold = 100;
 
     if (bright > threshold) {
-        altR = altG = altB = 255;
+        altR = 255;
+        altG = 255;
+        altB = 255;
     } else {
-        altR = altG = altB = 0;
+        altR = 0;
+        altG = 0;
+        altB = 0;
     }
     return [altR, altG, altB];
 
