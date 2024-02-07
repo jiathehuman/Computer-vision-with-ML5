@@ -121,6 +121,12 @@ function keyPressed()
         pictures[6].img = filter.processImage(img, 'redChannelSegment');
         pictures[7].img = filter.processImage(img, 'blueChannelSegment');
         pictures[8].img = filter.processImage(img, 'greenChannelSegment');
+        pictures[10].img = filter.processImage(img, 'hsvColour');
+        pictures[11].img = filter.processImage(img, 'ycbcrColour');
+        pictures[13].img = filter.processImage(img, 'threshold');
+
+        // pictures[13].img = filter.processImage((filter.processImage(img, 'hsvColour')), 'threshold');
+        // pictures[14].img = filter.processImage((filter.processImage(img, 'ycbcrColour')), 'threshold');
         // pictures[2].img = filter.processImage(img, 'redChannel') 
 
 

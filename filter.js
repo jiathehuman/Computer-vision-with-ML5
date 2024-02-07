@@ -23,14 +23,7 @@ function Filter(){
                 imgOut.pixels[index + 1] = processedPixel[1];
                 imgOut.pixels[index + 2] = processedPixel[2];
                 imgOut.pixels[index + 3] = 255;
-    
-                // var grey = processedPixel[2];
-    
-                // // new code   
-                // var alt_grey = min(grey , 255);
-    
-                // imgOut.pixels[index+0]= imgOut.pixels[index+1] = imgOut.pixels[index+2] = alt_grey;
-                // imgOut.pixels[index+3]= 255;
+
             }
         }
         imgOut.updatePixels(); 
@@ -47,24 +40,9 @@ function Filter(){
         if(filterName == 'redChannelSegment') processedPixel = channelSegmentation(r,g,b, 'red');
         if(filterName == 'blueChannelSegment') processedPixel = channelSegmentation(r,g,b, 'green');
         if(filterName == 'greenChannelSegment') processedPixel = channelSegmentation(r,g,b, 'blue');
-        // switch(filterName){
-        //     case 'greyscale': 
-        //         processedPixel = greyscaleFilter(r,g,b)
-        //     case 'redChannel': 
-        //         processedPixel = channel(r,g,b, 'red')
-        // }
-            // case 'greyscale': return greyscaleFilter(r,g,b)
-            // case 'greyscale': return greyscaleFilter(r,g,b)
-            // case 'greyscale': return greyscaleFilter(r,g,b)
-            // case 'greyscale': return greyscaleFilter(r,g,b)
-            // case 'greyscale': return greyscaleFilter(r,g,b)
-            // case 'greyscale': return greyscaleFilter(r,g,b)
-            // case 'greyscale': return greyscaleFilter(r,g,b)
-            // case 'greyscale': return greyscaleFilter(r,g,b)
-            // case 'greyscale': return greyscaleFilter(r,g,b)
-            // case 'greyscale': return greyscaleFilter(r,g,b)
-            // case 'greyscale': return greyscaleFilter(r,g,b)
-        // }
+        if(filterName == 'hsvColour') processedPixel = rgbToHSV(r,g,b);
+        if(filterName == 'ycbcrColour') processedPixel = rgbToYCBCR(r,g,b);
+        if(filterName == 'threshold') processedPixel = thresholdFilter(r,g,b);
 
         return processedPixel;
     }
