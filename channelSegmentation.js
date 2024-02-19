@@ -45,8 +45,8 @@ function channelSegmentation(r,g,b, channel){
         altB = b;
     }
     else{
-        var grey = (r + g + b) / 3 * 0.1; // make it dark so the difference in colour is more obvious
-        altR = altG = altB = grey;
+        var dark = (r + g + b) / 3 * 0.1; // make it dark so the difference in colour is more obvious
+        altR = altG = altB = dark;
     }
 
     return[altR, altG, altB]

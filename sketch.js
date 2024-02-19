@@ -2,21 +2,22 @@
 // based on https://github.com/mtschirs/js-objectdetect
 
 /** ------------------------------------------------------------------------
-COMMENTARY
+GENERAL
 Some of the code used are taken from Week 14 - 19 of Coursera videos.
 New code will be indicated with appropriate comments.
 -------------------------------------------------------------------------- */
 
-let imgWidth = 160, imgHeight = 120;
+let imgWidth = 160, imgHeight = 120; 
 let filter; // filter object to apply filters
 let webcamStream;
 let img; // image captured from webcam, used as base for filters
 
 let pictures = []; // populate with pictures later
-let imageLoaded = false;
+let imageLoaded = false; // false until the first image is loaded
 
-/** sliders and slider values */ 
+/** sliders */ 
 let segmentationRSlider, segmentationGSlider, segmentationBSlider, pixelSlider;
+/** slider values */ 
 var segmentationRVal,
   segmentationGVal,
   segmentationBVal,
@@ -27,7 +28,7 @@ var segmentationRVal,
 let faceapi;
 let detections = []; 
 let faceX, faceY, faceWidth, faceHeight; // store the coordinates of the detected face
-var faceFilterMode = 0;
+var faceFilterMode = 0; // default is the first greyscale filter
 
 
 /** ----------------------------------------------------------------------------
@@ -69,6 +70,7 @@ function setup() {
   segmentationGSlider.parent("greenslider");
   segmentationBSlider.parent("blueslider");
   pixelSlider.parent("pixelslider");
+  // end of new code
 }
 /** ---------------------------------------------------------------------------- */
 
@@ -81,6 +83,9 @@ function setup() {
 ----------------------------------------------------------------------------- */
 function draw() {
   background(0);
+
+  // new code
+
   /** get the values of the sliders */ 
   segmentationRVal = segmentationRSlider.value();
   segmentationGVal = segmentationGSlider.value();
@@ -111,13 +116,19 @@ function draw() {
         }
     }
   }
+  // end of new code
 }
 
+// new code
 function keyPressed() {
   if (keyCode == 83) {
     img = createImage(imgWidth, imgHeight);
     console.log("s is pressed");
     img = webcamStream.get();
+
+
+    /** Reference for ml5.js face API
+    https://www.youtube.com/watch?v=3yqANLRWGLo&list=WL&index=1&t=1228s */ 
 
     const faceOptions = {
       withLandMarks: true,
@@ -128,12 +139,14 @@ function keyPressed() {
 
     faceapi = ml5.faceApi(webcamStream, faceOptions, faceLoaded);
 
+    /** loads all the images with the webcam image */
     for (let i = 0; i < pictures.length; i++) {
       pictures[i].loadPicture(img);
     }
 
-    imageLoaded = true;
+    imageLoaded = true; // when imageLoaded is true, the image is drawn in the draw loop
 
+   /** calls a filter on the different images */
     pictures[1].img = filter.processImage(img, "greyscale");
     pictures[3].img = filter.processImage(img, "redChannel");
     pictures[4].img = filter.processImage(img, "blueChannel");
@@ -144,8 +157,10 @@ function keyPressed() {
     pictures[14].img = filter.processImage(pictures[11].img, "threshold");
   }
 
+  /** apply the filter on the face */
   if (keyCode == 49) faceFilterMode = 1; // press '1' for greyscale
   if (keyCode == 50) faceFilterMode = 2; // press '2' for blur
   if (keyCode == 51) faceFilterMode = 3; // press '3' for colour conversion
   if (keyCode == 52) faceFilterMode = 4; // press '4' for pixelation
 }
+// end of new code

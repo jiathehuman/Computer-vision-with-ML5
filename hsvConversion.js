@@ -1,4 +1,13 @@
 // reference: https://gist.github.com/avisek/eadfbe7a7a169b1001a2d3affc21052e
+
+/** ------------------------------------------------------------------------------------
+ * HSV FILTER
+ * Takes in a r, g, b
+ * Depending on the r,g,b values, calculate hue, saturation and value.
+ * Return the processed r, g, b as h, s, v in an array
+ ------------------------------------------------------------------------------------- */
+
+// new code
 function rgbToHSV(r,g,b)
 {
     r /= 255, g/=255, b/=255; // divide all by 255 to normalise
@@ -35,7 +44,7 @@ function rgbToHSV(r,g,b)
 
     return[hue, mSaturation, mValue]
 }
-
+// end of new code
 
 
 

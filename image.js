@@ -4,6 +4,8 @@
  * loadPicture creates an image from the base img
  * show places the image at the given position
  ------------------------------------------------------------------- */
+
+ // new code
 class Picture{
     constructor(imgWidth, imgHeight, posX, posY){
         this.w = imgWidth;
@@ -23,3 +25,4 @@ class Picture{
         image(this.img, this.x, this.y);
     }
 }
+// end of new code
