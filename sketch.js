@@ -30,6 +30,12 @@ let detections = [];
 let faceX, faceY, faceWidth, faceHeight; // store the coordinates of the detected face
 var faceFilterMode = 0; // default is the first greyscale filter
 
+let handpose;
+let predictions = [];
+
+
+// let poseNet, pose
+
 // var overlay;
 // var faceImg
 
@@ -45,9 +51,13 @@ function setup() {
   // overlay.clear()
   pixelDensity(1); // makes sure it renders correctly on different screens
 
+  // poseNet.on('pose',gotPoses);
+
+  frameRate(1);
   // new code
   canvas.parent("canvas");
   // overlay.parent("overlay")
+  // poseNet = ml5.poseNet();
   filter = new Filter(); // filter object processes images and applies filters
   faceFilter = new FaceFilter(); // faceFilter object applies filters on a detected face
 
@@ -76,6 +86,8 @@ function setup() {
   segmentationGSlider.parent("greenslider");
   segmentationBSlider.parent("blueslider");
   pixelSlider.parent("pixelslider");
+
+  // handpose = ml5.handpose(modelLoaded);
   // end of new code
 }
 /** ---------------------------------------------------------------------------- */
@@ -124,6 +136,14 @@ function draw() {
     }
 
   faceFilter.faceLandmarks(detections, pictures[15].x, pictures[15].y);
+
+  if(predictions.length > 0){
+    drawKeypoints(img);
+  }
+  // if(pose){
+  //   faceFilter.drawPose();
+  // }
+
   }
   // end of new code
 }
@@ -146,11 +166,18 @@ function keyPressed() {
     };
 
     faceapi = ml5.faceApi(webcamStream, faceOptions, faceLoaded);
+    // poseNet = ml5.poseNet(webcamStream,'multiple',poseLoaded);
+    handpose = ml5.handpose(modelLoaded);
 
     /** loads all the images with the webcam image */
     for (let i = 0; i < pictures.length; i++) {
       pictures[i].loadPicture(img);
     }
+
+    // poseNet.on('pose',gotPoses);
+    // handpose.on('hand', results => {
+    //   predictions = results;
+    // })
 
     imageLoaded = true; // when imageLoaded is true, the image is drawn in the draw loop
 
