@@ -30,6 +30,9 @@ let detections = [];
 let faceX, faceY, faceWidth, faceHeight; // store the coordinates of the detected face
 var faceFilterMode = 0; // default is the first greyscale filter
 
+// var overlay;
+// var faceImg
+
 
 /** ----------------------------------------------------------------------------
  * SETUP
@@ -37,11 +40,14 @@ var faceFilterMode = 0; // default is the first greyscale filter
  * Creates sliders
 ---------------------------------------------------------------------------- */
 function setup() {
-  const canvas = createCanvas(imgWidth * 3, imgHeight * 6);
+  const canvas = createCanvas(imgWidth * 6, imgHeight * 6);
+  // overlay = createGraphics(imgWidth * 3, imgHeight * 6);
+  // overlay.clear()
   pixelDensity(1); // makes sure it renders correctly on different screens
 
   // new code
   canvas.parent("canvas");
+  // overlay.parent("overlay")
   filter = new Filter(); // filter object processes images and applies filters
   faceFilter = new FaceFilter(); // faceFilter object applies filters on a detected face
 
@@ -50,7 +56,7 @@ function setup() {
   webcamStream.hide();
 
   // for 5 rows and 3 columns, create a new Picture object and push into pictures array
-  for (var i = 0; i < 5; i++) {
+  for (var i = 0; i < 6; i++) {
     for (var j = 0; j < 3; j++) {
       pictures.push(
         new Picture(imgWidth, imgHeight, j * imgWidth, i * imgHeight)
@@ -103,6 +109,7 @@ function draw() {
       for (var f = 0; f < detections.length; f++) { // for every face, apply a filter
         let { _x, _y, _width, _height } = detections[0].alignedRect._box; // position and height of face
         pictures[12].img = faceFilter.processImage(img,_x,_y,_width,_height); // apply the face filter on pictures[12]
+
       }
     }
 
@@ -112,9 +119,11 @@ function draw() {
             pictures[i].show(); // displays picture
         }
         catch(err){
-            console.log(pictures[i] + " not loaded.")
+            console.log(pictures[i] + " not loaded." + err)
         }
     }
+
+  faceFilter.faceLandmarks(detections, pictures[15].x, pictures[15].y);
   }
   // end of new code
 }
@@ -132,8 +141,7 @@ function keyPressed() {
 
     const faceOptions = {
       withLandMarks: true,
-      withExpressions: true,
-      withDescriptor: false,
+      withDescriptor: true,
       minConfidence: 0.5,
     };
 
