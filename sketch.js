@@ -53,6 +53,7 @@ function setup() {
 
   // poseNet.on('pose',gotPoses);
 
+
   frameRate(1);
   // new code
   canvas.parent("canvas");
@@ -135,14 +136,12 @@ function draw() {
         }
     }
 
-  faceFilter.faceLandmarks(detections, pictures[15].x, pictures[15].y);
+  faceFilter.faceLandmarks(img, detections, pictures[15].x, pictures[15].y);
 
   if(predictions.length > 0){
     drawKeypoints(img);
   }
-  // if(pose){
-  //   faceFilter.drawPose();
-  // }
+
 
   }
   // end of new code
@@ -166,18 +165,23 @@ function keyPressed() {
     };
 
     faceapi = ml5.faceApi(webcamStream, faceOptions, faceLoaded);
-    // poseNet = ml5.poseNet(webcamStream,'multiple',poseLoaded);
-    handpose = ml5.handpose(modelLoaded);
+
+    // UNCOMMENT BELOW LATER
+    // handpose = ml5.handpose(webcamStream, modelLoaded);
+    // handpose.on('hand', results => {
+    //   predictions = results;
+    // })
+
+    // DO NOT DELETE ABOVE
+
 
     /** loads all the images with the webcam image */
     for (let i = 0; i < pictures.length; i++) {
       pictures[i].loadPicture(img);
     }
 
-    // poseNet.on('pose',gotPoses);
-    // handpose.on('hand', results => {
-    //   predictions = results;
-    // })
+
+
 
     imageLoaded = true; // when imageLoaded is true, the image is drawn in the draw loop
 

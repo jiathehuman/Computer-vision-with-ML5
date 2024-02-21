@@ -26,10 +26,11 @@ function gotFaces(error, results) {
 
 function modelLoaded(){
   console.log('Model loadeed!')
-  handpose.on("predict", results => {
-    predictions = results;
-  });
-  handpose.predict(img);
+
+  // handpose.on("predict", results => {
+  //   predictions = results;
+  // });
+  // handpose.predict(img);
 }
 
 // A function to draw ellipses over the detected keypoints

@@ -125,7 +125,7 @@ class FaceFilter {
     return [totalRed, totalGreen, totalBlue];
   }
 
-  faceLandmarks(detections, x, y) {
+  faceLandmarks(img, detections, x, y) {
     if (detections.length > 0) {
     let points = detections[0].landmarks._positions;
       push();
@@ -137,37 +137,49 @@ class FaceFilter {
       }
       pop();
 
-      push()
-      translate(imgWidth * 2, imgHeight);
-      scale(4)
+      push();
+      translate(imgWidth * 3 + 50, imgHeight * 2);
+      scale(2.5)
+      image(img, 0, 0);
+      let min_x = imgWidth;
+      let max_x = 0;
+      let min_y = imgHeight;
+      let max_y = 0;
       for (let i = 0; i < points.length; i++) {
         stroke(255,0,0);
         strokeWeight(1);
         point(points[i]._x, points[i]._y);
+
+        min_x = min(min_x, points[i]._x);
+        max_x = max(max_x, points[i]._x);
+        min_y = min(min_y, points[i]._y);
+        max_y = max(max_y, points[i]._y);
       }
+
+      let jawPoints = detections[0].parts.jawOutline
+      stroke(0)
+      strokeWeight(3)
+      point(jawPoints[15]._x, jawPoints[15]._y)
+    //   for(let i = 0; i < jawPoints.length; i++){
+    //     stroke(0);
+    //     strokeWeight(3);
+    //     point(points[i]._x, points[i]._y);
+    //   }
+
       pop();
+
+    //   push()
+    //   translate(imgWidth * 2, imgHeight);
+    //   scale(4)
+    //   for (let i = 0; i < points.length; i++) {
+    //     stroke(255,0,0);
+    //     strokeWeight(1);
+    //     point(points[i]._x, points[i]._y);
+    //   }
+    //   pop();
 
     }
   }
-  drawPose(){
-    push();
-    translate(imgWidth * 2, imgHeight);
-    scale(4)
-    fill(255,255,255)
 
-    // for (let j = 0; j < pose.keypoints.length; j++) {
-    //     // A keypoint is an object describing a body part (like rightArm or leftShoulder)
-    //     let keypoint = pose.keypoints[j];
-    //     // Only draw an ellipse is the pose probability is bigger than 0.2
-    //     if (keypoint.score > 0.2) {
-    //       fill(255);
-    //       noStroke();
-    //       ellipse(keypoint.position.x, keypoint.position.y, 1, 1);
-    //     }
-    //   }
-
-    
-    pop();
-  }
   }
 
