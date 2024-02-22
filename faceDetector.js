@@ -117,11 +117,13 @@ class FaceFilter {
       translate(imgWidth * 3 + 50, imgHeight * 4);
       // scale(2.5)
       // image(img, 0, 0);
-      for (let i = 0; i < points.length; i++) {
-        stroke(255,0,0);
-        strokeWeight(1);
-        point(points[i]._x, points[i]._y);
-      }
+      // imptorant --------------
+      // for (let i = 0; i < points.length; i++) {
+      //   stroke(255,0,0);
+      //   strokeWeight(1);
+      //   point(points[i]._x, points[i]._y);
+      // }
+      // ---------------------------
       // let min_x = imgWidth;
       // let max_x = 0;
       // let min_y = imgHeight;

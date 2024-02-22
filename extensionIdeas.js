@@ -1,4 +1,25 @@
-            // RMB NOT TO DELETE BELOW, CAN USE FOR EXTENSION - convert back to rgb
+// function popart(imgIn){
+//     var imgOut = createImage(img.width, img.height);
+//     imgOut = img.get();
+//     imgOut.loadPixels();
+//     imgIn.loadPixels();
+//     for(let i = 0; i < imgIn.width; i += 10){
+//         for(let j = 0; j < imgIn.height; j += 10){
+//             let c1 = (255,0,0)
+//             let c2 = (0,255,0)
+//             let c = img.get(i,j)
+//             let b = brightness(c)
+//             let val = map(b, 0, 100, 0, 1)
+//             let colour = lerpColor(c1,c2,val)
+//             rect(0,0,10,10)
+//         }
+//     }
+//     imgOut.updatePixels();
+//     return imgOut;
+// }
+
+
+// RMB NOT TO DELETE BELOW, CAN USE FOR EXTENSION - convert back to rgb
             // convert back to rgb
             // var hex = hue / 60
             // var primaryColour = Math.floor(hex);

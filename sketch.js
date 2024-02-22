@@ -76,7 +76,7 @@ function setup() {
 
   webcamStream = createCapture(VIDEO); // captures the video from webcam
   webcamStream.size(imgWidth, imgHeight); // resizes the image
-  webcamStream.hide();
+  // webcamStream.hide();
 
   // for 5 rows and 3 columns, create a new Picture object and push into pictures array
   for (var i = 0; i < 5; i++) {
@@ -120,11 +120,6 @@ function setup() {
   segmentationBSlider.parent("blueslider");
   pixelSlider.parent("pixelslider");
 
-  // colorPicker1 = createColorPicker('black');
-  // colorPicker2 = createColorPicker('white');
-  // colorPicker1.parent("colorPicker");
-  // colorPicker2.parent("colorPicker")
-
   // handpose = ml5.handpose(modelLoaded);
   // end of new code
 }
@@ -139,8 +134,7 @@ function setup() {
 ----------------------------------------------------------------------------- */
 function draw() {
   background(20, 10, 30);
-
-  image(webcamStream, imgWidth * 3, imgHeight * 5)
+  // image(webcamStream, imgWidth * 3, imgHeight * 5);
 
   fill(255);
   textSize(25);
@@ -160,6 +154,7 @@ function draw() {
   if (!imageLoaded) {
     return;
   }
+  // image(webcamStream, imgWidth * 3, imgHeight * 5);
 
   /** get the values of the sliders */
   segmentationRVal = segmentationRSlider.value();
@@ -198,6 +193,7 @@ function draw() {
 
   image(buffer, extensions[0].x, extensions[0].y);
   faceFilter.faceLandmarks(img, detections, extensions[3].x, extensions[3].y);
+
 
   if (detections.length > 0) {
     drawKeypoints(img);
@@ -249,6 +245,7 @@ function keyPressed() {
     extensions[5].img = filter.processImage(img, "popartBlue");
 
     buffer = filter.processImage(pictures[1].img, "edge");
+    
 
     if (loadCount == pictures.length + extensions.length) {
       imageLoaded = true; // when imageLoaded is true, the image is drawn in the draw loop

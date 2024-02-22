@@ -36,43 +36,61 @@ function modelLoaded(){
 // A function to draw ellipses over the detected keypoints
 function drawKeypoints(img) {
   push();
-  translate(extensions[1].x, extensions[1].y);
+  translate(width/2, height/2);
   // scale(4)
+  var thumbY;
+  var ringFingerY;
   for (let i = 0; i < predictions.length; i += 1) {
     const prediction = predictions[i];
+    thumbY = predictions[0].annotations.thumb[0][1]
+    ringFingerY = predictions[0].annotations.ringFinger[0][1]
+
     for (let j = 0; j < prediction.landmarks.length; j += 1) {
       const keypoint = prediction.landmarks[j];
       fill(255, 255, 0);
       noStroke();
-      ellipse(keypoint[0], keypoint[1], 5, 5);
+      ellipse(keypoint[0], keypoint[1], 10, 10);
+
     }
 
     for (let j = 0; j < prediction.annotations.thumb.length; j += 1) {
       const keypoint = prediction.annotations.thumb[j];
       fill(0, 255, 0);
       noStroke();
-      ellipse(keypoint[0], keypoint[1], 5, 5);
+      ellipse(keypoint[0], keypoint[1], 10, 10);
     }
   }
+
+  if(thumbY > ringFingerY){
+    console.log("Thumbs down") 
+    fill(255,0,0)
+    rect(0,0,100,100)
+  } 
+  if(thumbY < ringFingerY){
+    fill(0,255,0)
+    rect(0,0,100,100)
+  }
+
+  
 
   // CODE FOR FACE BELOW
-  for (let i = 0; i < detections.length; i += 1) {
-    const prediction = detections[i];
-    for (let j = 0; j < prediction.landmarks.length; j += 1) {
-      const keypoint = prediction.landmarks[j];
-      fill(255, 255, 0);
-      noStroke();
-      ellipse(keypoint[0], keypoint[1], 5, 5);
-    }
-    //  END OF CODE FOR FACE
+  // for (let i = 0; i < detections.length; i += 1) {
+  //   const prediction = detections[i];
+  //   for (let j = 0; j < prediction.landmarks.length; j += 1) {
+  //     const keypoint = prediction.landmarks[j];
+  //     fill(255, 255, 0);
+  //     noStroke();
+  //     ellipse(keypoint[0], keypoint[1], 5, 5);
+  //   }
+  //   //  END OF CODE FOR FACE
 
-    // for (let j = 0; j < prediction.annotations.thumb.length; j += 1) {
-    //   const keypoint = prediction.annotations.thumb[j];
-    //   fill(0, 255, 0);
-    //   noStroke();
-    //   ellipse(keypoint[0], keypoint[1], 5, 5);
-    // }
-  }
+  //   // for (let j = 0; j < prediction.annotations.thumb.length; j += 1) {
+  //   //   const keypoint = prediction.annotations.thumb[j];
+  //   //   fill(0, 255, 0);
+  //   //   noStroke();
+  //   //   ellipse(keypoint[0], keypoint[1], 5, 5);
+  //   // }
+  // }
   pop();
 }
 // end of new code
