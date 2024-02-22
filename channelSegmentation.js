@@ -14,7 +14,7 @@ function channel(r,g,b, channel)
             break;
         
     }
-    return [altR, altG, altB];
+    return [altR, altG, altB, 255];
 }
 
 function channelSegmentation(r,g,b, channel){
@@ -49,5 +49,5 @@ function channelSegmentation(r,g,b, channel){
         altR = altG = altB = dark;
     }
 
-    return[altR, altG, altB]
+    return[altR, altG, altB, 255]
 }

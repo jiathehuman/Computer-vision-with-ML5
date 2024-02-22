@@ -16,7 +16,7 @@ function rgbToYCBCR(r,g,b)
 
         // 16 to 235 for y', 16 ro 240 doe Cb and Cr
 
-        return [yPrime, Cb, Cr]
+        return [yPrime, Cb, Cr, 255]
 }
 
 // end of new code

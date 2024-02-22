@@ -42,7 +42,7 @@ function rgbToHSV(r,g,b)
     let mSaturation = map(saturation, 0, 100, 0, 255);
     let mValue = map(value,0,100,0,255);
 
-    return[hue, mSaturation, mValue]
+    return[hue, mSaturation, mValue, 255]
 }
 // end of new code
 

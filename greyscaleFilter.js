@@ -11,6 +11,6 @@ function greyscaleFilter(r,g,b){
     // new code
     var altGrey = min(grey , 255);
     let altR = altG = altB = altGrey;
-    return [altR, altG, altB];
+    return [altR, altG, altB, 255];
     // end of new code
 }

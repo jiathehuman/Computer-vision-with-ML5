@@ -19,6 +19,6 @@ function thresholdFilter(r,g,b){
         altG = 0;
         altB = 0;
     }
-    return [altR, altG, altB];
+    return [altR, altG, altB, 255];
 }
 // end of code given by coursera

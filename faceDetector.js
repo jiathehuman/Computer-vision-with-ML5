@@ -84,82 +84,64 @@ class FaceFilter {
     var processedPixel;
     if (faceFilterMode == 0 || faceFilterMode == 1)
       processedPixel = greyscaleFilter(r, g, b);
-    else if (faceFilterMode == 2) processedPixel = this.blur(img, x, y);
+    else if (faceFilterMode == 2) processedPixel = blur(img, x, y);
     else if (faceFilterMode == 3) processedPixel = rgbToYCBCR(r, g, b);
     return processedPixel;
   };
 
-  blur(img, x, y) {
-    var matrix = [
-      [1 / 9, 1 / 9, 1 / 9],
-      [1 / 9, 1 / 9, 1 / 9],
-      [1 / 9, 1 / 9, 1 / 9],
-    ];
-    var c = this.convolution(x, y, matrix, matrix.length, img);
-    return c;
-  }
+  // blur(img, x, y) {
+  //   var matrix = [
+  //     [1 / 9, 1 / 9, 1 / 9],
+  //     [1 / 9, 1 / 9, 1 / 9],
+  //     [1 / 9, 1 / 9, 1 / 9],
+  //   ];
+  //   var c = filter.convolution(x, y, matrix, matrix.length, img);
+  //   return c;
+  // }
 
-  convolution(x, y, matrix, matrixSize, img) {
-    var totalRed = 0.0;
-    var totalGreen = 0.0;
-    var totalBlue = 0.0;
-    var offset = floor(matrixSize / 2);
 
-    // convolution matrix loop
-    for (var i = 0; i < matrixSize; i++) {
-      for (var j = 0; j < matrixSize; j++) {
-        // Get pixel loc within convolution matrix
-        var xloc = x + i - offset;
-        var yloc = y + j - offset;
-        var index = (xloc + img.width * yloc) * 4;
-        // ensure we don't address a pixel that doesn't exist
-        index = constrain(index, 0, img.pixels.length - 1);
-
-        // multiply all values with the mask and sum up
-        totalRed += img.pixels[index + 0] * matrix[i][j];
-        totalGreen += img.pixels[index + 1] * matrix[i][j];
-        totalBlue += img.pixels[index + 2] * matrix[i][j];
-      }
-    }
-    // return the new color
-    return [totalRed, totalGreen, totalBlue];
-  }
 
   faceLandmarks(img, detections, x, y) {
     if (detections.length > 0) {
-    let points = detections[0].landmarks._positions;
-      push();
-      translate(x, y);
-      for (let i = 0; i < points.length; i++) {
-        stroke(255,0,0);
-        strokeWeight(1);
-        point(points[i]._x, points[i]._y);
-      }
-      pop();
+    // let points = detections[0].landmarks._positions;
+    //   push();
+    //   translate(x, y);
+    //   for (let i = 0; i < points.length; i++) {
+    //     stroke(255,0,0);
+    //     strokeWeight(1);
+    //     point(points[i]._x, points[i]._y);
+    //   }
+    //   pop();
 
-      push();
-      translate(imgWidth * 3 + 50, imgHeight * 2);
-      scale(2.5)
-      image(img, 0, 0);
-      let min_x = imgWidth;
-      let max_x = 0;
-      let min_y = imgHeight;
-      let max_y = 0;
-      for (let i = 0; i < points.length; i++) {
-        stroke(255,0,0);
-        strokeWeight(1);
-        point(points[i]._x, points[i]._y);
+      // push();
+      // translate(imgWidth * 3 + 50, imgHeight * 2);
+      // scale(2.5)
+      // image(img, 0, 0);
+      // let min_x = imgWidth;
+      // let max_x = 0;
+      // let min_y = imgHeight;
+      // let max_y = 0;
+      // for (let i = 0; i < points.length; i++) {
+      //   stroke(255,0,0);
+      //   strokeWeight(1);
+      //   point(points[i]._x, points[i]._y);
 
-        min_x = min(min_x, points[i]._x);
-        max_x = max(max_x, points[i]._x);
-        min_y = min(min_y, points[i]._y);
-        max_y = max(max_y, points[i]._y);
-      }
+      //   min_x = min(min_x, points[i]._x);
+      //   max_x = max(max_x, points[i]._x);
+      //   min_y = min(min_y, points[i]._y);
+      //   max_y = max(max_y, points[i]._y);
+      // }
 
-      let jawPoints = detections[0].parts.jawOutline
-      stroke(0)
-      strokeWeight(3)
-      point(jawPoints[15]._x, jawPoints[15]._y)
+      // let jawPoints = detections[0].parts.jawOutline
+      // stroke(0)
+      // strokeWeight(3)
+      // point(jawPoints[15]._x, jawPoints[15]._y)
+
+      // let leftEyePoints = detections[0].parts.leftEye
+      // stroke(0)
+      // strokeWeight(5)
+      // point(leftEyePoints[2]._x, leftEyePoints[2]._y)
+
     //   for(let i = 0; i < jawPoints.length; i++){
     //     stroke(0);
     //     strokeWeight(3);

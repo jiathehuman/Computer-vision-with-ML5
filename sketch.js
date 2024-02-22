@@ -33,6 +33,7 @@ var faceFilterMode = 0; // default is the first greyscale filter
 let handpose;
 let predictions = [];
 
+var buffer;
 
 // let poseNet, pose
 
@@ -54,7 +55,7 @@ function setup() {
   // poseNet.on('pose',gotPoses);
 
 
-  frameRate(1);
+  frameRate(20);
   // new code
   canvas.parent("canvas");
   // overlay.parent("overlay")
@@ -64,7 +65,7 @@ function setup() {
 
   webcamStream = createCapture(VIDEO); // captures the video from webcam
   webcamStream.size(imgWidth, imgHeight); // resizes the image
-  webcamStream.hide();
+  // webcamStream.hide();
 
   // for 5 rows and 3 columns, create a new Picture object and push into pictures array
   for (var i = 0; i < 6; i++) {
@@ -74,6 +75,7 @@ function setup() {
       );
     }
   }
+  buffer = createImage(imgWidth, imgHeight);
 
 
   // creates the sliders to adjust colour segmentation and pixel size
@@ -101,7 +103,7 @@ function setup() {
  * Loop through all the pictures and display on canvas.
 ----------------------------------------------------------------------------- */
 function draw() {
-  background(0);
+  background(100,100,100);
 
   // new code
 
@@ -136,12 +138,20 @@ function draw() {
         }
     }
 
+  image(buffer,pictures[15].x, pictures[15].y);
   faceFilter.faceLandmarks(img, detections, pictures[15].x, pictures[15].y);
 
   if(predictions.length > 0){
     drawKeypoints(img);
   }
 
+  push();
+  translate(imgWidth * 3 + 50, imgHeight * 2);
+  scale(2.5)
+  image(webcamStream, 0, 0);
+  pop()
+
+  // noLoop()
 
   }
   // end of new code
@@ -167,10 +177,10 @@ function keyPressed() {
     faceapi = ml5.faceApi(webcamStream, faceOptions, faceLoaded);
 
     // UNCOMMENT BELOW LATER
-    // handpose = ml5.handpose(webcamStream, modelLoaded);
-    // handpose.on('hand', results => {
-    //   predictions = results;
-    // })
+    handpose = ml5.handpose(webcamStream, modelLoaded);
+    handpose.on('hand', results => {
+      predictions = results;
+    })
 
     // DO NOT DELETE ABOVE
 
@@ -179,6 +189,7 @@ function keyPressed() {
     for (let i = 0; i < pictures.length; i++) {
       pictures[i].loadPicture(img);
     }
+
 
 
 
@@ -194,6 +205,9 @@ function keyPressed() {
     pictures[11].img = filter.processImage(img, "ycbcrColour");
     pictures[13].img = filter.processImage(pictures[10].img, "threshold");
     pictures[14].img = filter.processImage(pictures[11].img, "threshold");
+    pictures[15].img = filter.processImage(img, "blur");
+    // pictures[16].img = filter.processImage(img, "greyscale")
+    buffer = filter.processImage(pictures[1].img, "edge")
   }
 
   /** apply the filter on the face */
