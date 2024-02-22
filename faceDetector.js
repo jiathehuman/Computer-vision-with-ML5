@@ -103,9 +103,9 @@ class FaceFilter {
 
   faceLandmarks(img, detections, x, y) {
     if (detections.length > 0) {
-    // let points = detections[0].landmarks._positions;
+    let points = detections[0].landmarks._positions;
     //   push();
-    //   translate(x, y);
+    //   translate(extensions[1].x, extensions[2].x);
     //   for (let i = 0; i < points.length; i++) {
     //     stroke(255,0,0);
     //     strokeWeight(1);
@@ -113,10 +113,15 @@ class FaceFilter {
     //   }
     //   pop();
 
-      // push();
-      // translate(imgWidth * 3 + 50, imgHeight * 2);
+      push();
+      translate(imgWidth * 3 + 50, imgHeight * 4);
       // scale(2.5)
       // image(img, 0, 0);
+      for (let i = 0; i < points.length; i++) {
+        stroke(255,0,0);
+        strokeWeight(1);
+        point(points[i]._x, points[i]._y);
+      }
       // let min_x = imgWidth;
       // let max_x = 0;
       // let min_y = imgHeight;
@@ -142,11 +147,11 @@ class FaceFilter {
       // strokeWeight(5)
       // point(leftEyePoints[2]._x, leftEyePoints[2]._y)
 
-    //   for(let i = 0; i < jawPoints.length; i++){
-    //     stroke(0);
-    //     strokeWeight(3);
-    //     point(points[i]._x, points[i]._y);
-    //   }
+      // for(let i = 0; i < jawPoints.length; i++){
+      //   stroke(0);
+      //   strokeWeight(3);
+      //   point(points[i]._x, points[i]._y);
+      // }
 
       pop();
 

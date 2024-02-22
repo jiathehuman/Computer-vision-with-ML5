@@ -36,7 +36,7 @@ function modelLoaded(){
 // A function to draw ellipses over the detected keypoints
 function drawKeypoints(img) {
   push();
-  translate(imgWidth * 3, imgHeight);
+  translate(extensions[1].x, extensions[1].y);
   // scale(4)
   for (let i = 0; i < predictions.length; i += 1) {
     const prediction = predictions[i];
@@ -53,6 +53,25 @@ function drawKeypoints(img) {
       noStroke();
       ellipse(keypoint[0], keypoint[1], 5, 5);
     }
+  }
+
+  // CODE FOR FACE BELOW
+  for (let i = 0; i < detections.length; i += 1) {
+    const prediction = detections[i];
+    for (let j = 0; j < prediction.landmarks.length; j += 1) {
+      const keypoint = prediction.landmarks[j];
+      fill(255, 255, 0);
+      noStroke();
+      ellipse(keypoint[0], keypoint[1], 5, 5);
+    }
+    //  END OF CODE FOR FACE
+
+    // for (let j = 0; j < prediction.annotations.thumb.length; j += 1) {
+    //   const keypoint = prediction.annotations.thumb[j];
+    //   fill(0, 255, 0);
+    //   noStroke();
+    //   ellipse(keypoint[0], keypoint[1], 5, 5);
+    // }
   }
   pop();
 }
@@ -84,18 +103,27 @@ function edgeDetectionFilter(img, x, y){
     cY = map(abs(cY[0]), 0, 1020, 255, 0);
     var combo = cX + cY;
 
-    var r = g = b =0
+    // var r = g = b =0
+    var c
 
     if(combo < 450){
         // combo = 0;
-        r = random(100,250)
-        g = random(100,250)
-        g = random(100,250)
-        alpha = 255
+      c = 0
+      alpha = 255
     }
     else(alpha = 0)
-    return [r,g,b, alpha]
+    return [c,c,c, alpha]
 }
+
+function popFilter(c1,c2,brightness){
+
+  let value = map(brightness, 0, 100, 0, 1)
+  let altColour = lerpColor(c1,c2,value)
+
+  return [altColour.levels[0],altColour.levels[1],altColour.levels[2],255]
+  // end of new code
+}
+
 
 
 
@@ -122,4 +150,19 @@ function getGaussianKernel(size, sigma) {
     }
   
     return kernel;
+}
+
+function loadImages(){
+
+  for (let i = 0; i < pictures.length; i++) {
+    pictures[i].loadPicture(img);
+    pictures[i].loaded = true;
+    loadCount++;
+  }
+
+  for (let i = 0; i < extensions.length; i++) {
+    extensions[i].loadPicture(img);
+    extensions[i].loaded = true;
+    loadCount++;
+  }
 }

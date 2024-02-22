@@ -12,7 +12,11 @@ function Filter() {
         var g = img.pixels[index + 1];
         var b = img.pixels[index + 2];
 
-        var processedPixel = this.applyFilter(r, g, b, filterName, x, y);
+        var pixelColour = color(r,g,b)
+
+        var brightnessVal = brightness(pixelColour)
+
+        var processedPixel = this.applyFilter(r, g, b, filterName, x, y, pixelColour, brightnessVal);
 
         imgOut.pixels[index + 0] = processedPixel[0];
         imgOut.pixels[index + 1] = processedPixel[1];
@@ -24,7 +28,7 @@ function Filter() {
     return imgOut;
   };
 
-  this.applyFilter = function (r, g, b, filterName, x, y) {
+  this.applyFilter = function (r, g, b, filterName, x, y, pixelColour, brightness) {
     var processedPixel;
     if (filterName == "greyscale") processedPixel = greyscaleFilter(r, g, b);
     if (filterName == "redChannel") processedPixel = channel(r, g, b, "red");
@@ -41,6 +45,10 @@ function Filter() {
     if (filterName == "threshold") processedPixel = thresholdFilter(r, g, b);
     if (filterName == "blur") processedPixel = blur(img, x, y)
     if (filterName == "edge") processedPixel = edgeDetectionFilter(img, x, y)
+    if (filterName == "popartRed") processedPixel = popFilter(color(0,0,255), color(255,0,0), brightness)
+    if (filterName == "popartGreen") processedPixel = popFilter(color(0,255,0), color(0,0,255), brightness)
+    if (filterName == "popartBlue") processedPixel = popFilter(color(0,255,255), color(255,0,0), brightness)
+
     return processedPixel;
   };
 

@@ -13,7 +13,7 @@ class Picture{
         this.x = posX;
         this.y = posY;
         this.filter = filter;
-
+        this.loaded = false;
         this.img = createImage(this.w, this.h)
     }
 
@@ -22,7 +22,13 @@ class Picture{
     }
 
     show(){
-        image(this.img, this.x, this.y);
+        try{
+            image(this.img, this.x, this.y);
+        }
+        catch(error){
+        console.log(error)
+        }
+
     }
 }
 // end of new code
