@@ -36,7 +36,7 @@ function modelLoaded(){
 // A function to draw ellipses over the detected keypoints
 function drawKeypoints(img) {
   push();
-  translate(width/2, height/2);
+  // translate(width/2, height/2);
   // scale(4)
   var thumbY;
   var ringFingerY;
@@ -44,26 +44,27 @@ function drawKeypoints(img) {
   thumbY = predictions[0].annotations.thumb[0][1]
   ringFingerY = predictions[0].annotations.ringFinger[0][1]
 
-  fill(0)
-  ellipse(predictions[0].annotations.thumb[0][0], predictions[0].annotations.thumb[0][1], 10, 10)
-  ellipse(predictions[0].annotations.ringFinger[0][0], predictions[0].annotations.ringFinger[0][1], 10, 10)
+  // fill(0)
+  // ellipse(predictions[0].annotations.thumb[0][0], predictions[0].annotations.thumb[0][1], 10, 10)
+  // ellipse(predictions[0].annotations.ringFinger[0][0], predictions[0].annotations.ringFinger[0][1], 10, 10)
 
 
   if(thumbY > ringFingerY){
     console.log("Thumbs down") 
     push()
     fill(255,0,0)
-    translate(width/2, height/2)
-    rect(0,0,200,700)
+    translate(extensions[1].x, extensions[1].y)
+    extensions[2].img = filter.processImage(img, "redChannel");
+    rect(0,0,imgWidth, imgHeight)
     pop()
   } 
   if(thumbY < ringFingerY){
-
     push()
     console.log("Thumbs up") 
     fill(0,255,0)
-    translate(width/2, height/2)
-    rect(0,0,200,700)
+    translate(extensions[1].x, extensions[1].y)
+    extensions[2].img = filter.processImage(img, "greenChannel");
+    rect(0,0,imgWidth, imgHeight)
     pop()
   }
 

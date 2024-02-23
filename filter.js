@@ -32,14 +32,15 @@ function Filter() {
     var processedPixel;
     if (filterName == "greyscale") processedPixel = greyscaleFilter(r, g, b);
     if (filterName == "redChannel") processedPixel = channel(r, g, b, "red");
-    if (filterName == "blueChannel") processedPixel = channel(r, g, b, "green");
-    if (filterName == "greenChannel") processedPixel = channel(r, g, b, "blue");
+    if (filterName == "blueChannel") processedPixel = channel(r, g, b, "blue");
+    if (filterName == "greenChannel") processedPixel = channel(r, g, b, "green");
     if (filterName == "redChannelSegment")
       processedPixel = channelSegmentation(r, g, b, "red");
-    if (filterName == "blueChannelSegment")
+      if (filterName == "greenChannelSegment")
       processedPixel = channelSegmentation(r, g, b, "green");
-    if (filterName == "greenChannelSegment")
-      processedPixel = channelSegmentation(r, g, b, "blue");
+    if (filterName == "blueChannelSegment")
+      processedPixel = channelSegmentation(r, g, b, "bluen");
+
     if (filterName == "hsvColour") processedPixel = rgbToHSV(r, g, b);
     if (filterName == "ycbcrColour") processedPixel = rgbToYCBCR(r, g, b);
     if (filterName == "threshold") processedPixel = thresholdFilter(r, g, b);

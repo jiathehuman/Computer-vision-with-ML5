@@ -142,7 +142,8 @@ function draw() {
 
   textSize(15);
   text("Cartoon Effect", imgWidth * 3 + 30, 80);
-  text("Color Lerping", imgWidth * 4, imgHeight + 120);
+  text("Do thumbs up/down when model loaded.", imgWidth * 4, 80);
+  text("Color Lerping", imgWidth * 4 + 10, imgHeight + 120);
 
   for (var i = 0; i < picturesText.length; i++) {
     for (var j = 0; j < picturesText[i].length; j++) {
@@ -234,8 +235,8 @@ function keyPressed() {
     /** calls a filter on the different images */
     pictures[1].img = filter.processImage(img, "greyscale");
     pictures[3].img = filter.processImage(img, "redChannel");
-    pictures[4].img = filter.processImage(img, "blueChannel");
-    pictures[5].img = filter.processImage(img, "greenChannel");
+    pictures[4].img = filter.processImage(img, "greenChannel");
+    pictures[5].img = filter.processImage(img, "blueChannel");
     pictures[10].img = filter.processImage(img, "hsvColour");
     pictures[11].img = filter.processImage(img, "ycbcrColour");
     pictures[13].img = filter.processImage(pictures[10].img, "threshold");
