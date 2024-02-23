@@ -1,11 +1,37 @@
-// https://kylemcdonald.github.io/cv-examples/
-// based on https://github.com/mtschirs/js-objectdetect
+/**----------------------------------------------------------------------------------------------------
+ *
+-------------
+INSTRUCTIONS
+-------------
+Press 's' on keyboard to capture your image and start the image processing.
+Refresh browser if necessary.
 
-/** ------------------------------------------------------------------------
-GENERAL
+Give a few seconds for the face-api and hand-pose to load.
+
+-------------
+EXTENSION
+-------------
+1. Cartoon Effect
+Cartoon effect is made with a blur filter, and image detection to draw the outlines of objects.
+
+2. Hand Gesture
+When hand-pose has loaded (check top right hand corner for status), do a thumbs-up or down gesture.
+The third image in the first row of extensions should flicker green or red.
+
+3. Color Lerping
+The outline of your silhouette is captured, based on the brightness value of each pixel.
+
+4. Mosaic effect
+The effect is created by taking the brightness value of each pixel and drawing circles in its place.
+
+4. Postal sticker effect
+This filter takes in the image, distils it down into rectangles and applies a rotation based on mouseX and Y.
+
+
+Note:
 Some of the code used are taken from Week 14 - 19 of Coursera videos.
 New code will be indicated with appropriate comments.
--------------------------------------------------------------------------- */
+------------------------------------------------------------------------------------------------------------ */
 
 let imgWidth = 160,
   imgHeight = 120;
@@ -67,9 +93,10 @@ function setup() {
   canvas.parent("canvas");
 
   pixelDensity(1); // makes sure it renders correctly on different screens
+  angleMode(DEGREES)
 
   /** start of new code */
-  frameRate(20);
+  // frameRate(10);
   filter = new Filter(); // initialises filter object 
   faceFilter = new FaceFilter(); // initialises faceFilter object
 
@@ -106,7 +133,9 @@ function setup() {
     }
   }
 
-  /** buffer will contain 1 frame (snapshot) of webcam stream */
+  /** img continuously gets from webcam stream */
+  img = createImage(imgWidth, imgHeight);
+  /** buffer will contain 1 snapshot from img ^ */
   buffer = createImage(imgWidth, imgHeight);
 
   /** creates the sliders to adjust colour segmentation and pixel size */ 
@@ -133,8 +162,9 @@ function setup() {
  * Loop through all the pictures and display on canvas.
 ----------------------------------------------------------------------------- */
 function draw() {
+
+  // start of new code
   background(20, 10, 30);
-  img = createImage(imgWidth, imgHeight);
   img = webcamStream.get();
   image(webcamStream, imgWidth*6 + 10, 0)
 
@@ -150,21 +180,23 @@ function draw() {
   text("Do thumbs up/down when model loaded*.", imgWidth * 4 + 10, 80);
   text("Color Lerping" + "  ↓ ", imgWidth * 4 + 10, imgHeight + 120);
 
+  text("Mosaic effect" + "  ↓ ", imgWidth * 3 + 30, imgHeight * 3 + 50);
+  text("Postal sticker effect" + "  ↓ ", imgWidth * 4 + 10, imgHeight * 3 + 50);
+
   for (var i = 0; i < picturesText.length; i++) {
     for (var j = 0; j < picturesText[i].length; j++) {
       text(
         picturesText[i][j] + "  ↓ ",
-        30 + j * imgWidth,
+        20 + j * imgWidth,
         40 + i * (imgHeight + 50)
       );
     }
   }
 
-  // new code
+
   if (!imageLoaded) {
     return;
   }
-  // image(webcamStream, imgWidth * 3, imgHeight * 5);
 
   /** get the values of the sliders */
   segmentationRVal = segmentationRSlider.value();
@@ -183,7 +215,7 @@ function draw() {
     for (var f = 0; f < detections.length; f++) {
       // for every face, apply a filter
       let { _x, _y, _width, _height } = detections[0].alignedRect._box; // position and height of face
-      pictures[12].img = faceFilter.processImage(buffer, _x, _y, _width, _height); // apply the face filter on pictures[12]
+      pictures[12].img = faceFilter.processImage(img, _x, _y, _width, _height); // apply the face filter on pictures[12]
     }
   }
 
@@ -200,21 +232,24 @@ function draw() {
     return;
   }
 
-  // image(buffer, extensions[0].x, extensions[0].y);
+
   image(cartoonImg, extensions[0].x, extensions[0].y)
-  faceFilter.faceLandmarks(img, detections, extensions[3].x, extensions[3].y);
+  // faceFilter.faceLandmarks(buffer, detections, extensions[3].x, extensions[3].y);
+
 
   if (detections.length > 0) {
-    drawKeypoints(img);
+    drawKeypoints(buffer)
   }
+
+  mosaic(buffer, extensions[3].x, extensions[3].y + imgHeight + 50);
+  rectangleInt(buffer, extensions[4].x, extensions[3].y + imgHeight + 50)
+
 }
 // end of new code
 
 // new code
 function keyPressed() {
   if (keyCode == 83) {
-    // img = createImage(imgWidth, imgHeight);
-    // img = webcamStream.get();
 
     /** Reference for ml5.js face API
     https://www.youtube.com/watch?v=3yqANLRWGLo&list=WL&index=1&t=1228s */
@@ -236,22 +271,32 @@ function keyPressed() {
     });
 
     /** loads all the images with the webcam image */
-    loadImages();
+    for (let i = 0; i < pictures.length; i++) {
+      pictures[i].loadPicture(buffer);
+      pictures[i].loaded = true;
+      loadCount++;
+    }
+  
+    for (let i = 0; i < extensions.length; i++) {
+      extensions[i].loadPicture(buffer);
+      extensions[i].loaded = true;
+      loadCount++;
+    }
 
     /** calls a filter on the different images */
-    pictures[1].img = filter.processImage(img, "greyscale");
-    pictures[3].img = filter.processImage(img, "redChannel");
-    pictures[4].img = filter.processImage(img, "greenChannel");
-    pictures[5].img = filter.processImage(img, "blueChannel");
-    pictures[10].img = filter.processImage(img, "hsvColour");
-    pictures[11].img = filter.processImage(img, "ycbcrColour");
+    pictures[1].img = filter.processImage(buffer, "greyscale");
+    pictures[3].img = filter.processImage(buffer, "redChannel");
+    pictures[4].img = filter.processImage(buffer, "greenChannel");
+    pictures[5].img = filter.processImage(buffer, "blueChannel");
+    pictures[10].img = filter.processImage(buffer, "hsvColour");
+    pictures[11].img = filter.processImage(buffer, "ycbcrColour");
     // pictures[12].img = buffer;
     pictures[13].img = filter.processImage(pictures[10].img, "threshold");
     pictures[14].img = filter.processImage(pictures[11].img, "threshold");
 
-    extensions[3].img = filter.processImage(img, "popartRed");
-    extensions[4].img = filter.processImage(img, "popartGreen");
-    extensions[5].img = filter.processImage(img, "popartBlue");
+    extensions[3].img = filter.processImage(buffer, "popartRed");
+    extensions[4].img = filter.processImage(buffer, "popartGreen");
+    extensions[5].img = filter.processImage(buffer, "popartBlue");
 
     cartoonImg = filter.processImage(pictures[1].img, "edge");
 

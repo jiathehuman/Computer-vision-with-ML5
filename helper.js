@@ -11,6 +11,7 @@ function gotFaces(error, results) {
     return;
   }
   detections = results;
+  console.log("Found a face")
 }
 
 function modelLoaded(){
@@ -21,7 +22,7 @@ function modelLoaded(){
 // A function to draw ellipses over the detected keypoints
 function drawKeypoints(img) {
   push();
-  translate(extensions[1].x, extensions[1].y)
+  // translate(extensions[1].x, extensions[1].y)
   var thumbY;
   var ringFingerY;
   if(predictions.length < 1) return;
@@ -106,16 +107,16 @@ function getGaussianKernel(size, sigma) {
     return kernel;
 }
 
-function loadImages(){
-  for (let i = 0; i < pictures.length; i++) {
-    pictures[i].loadPicture(img);
-    pictures[i].loaded = true;
-    loadCount++;
-  }
+// function loadImages(){
+//   for (let i = 0; i < pictures.length; i++) {
+//     pictures[i].loadPicture(buffer);
+//     pictures[i].loaded = true;
+//     loadCount++;
+//   }
 
-  for (let i = 0; i < extensions.length; i++) {
-    extensions[i].loadPicture(img);
-    extensions[i].loaded = true;
-    loadCount++;
-  }
-}
+//   for (let i = 0; i < extensions.length; i++) {
+//     extensions[i].loadPicture(buffer);
+//     extensions[i].loaded = true;
+//     loadCount++;
+//   }
+// }

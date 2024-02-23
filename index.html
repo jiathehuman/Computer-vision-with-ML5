@@ -23,6 +23,7 @@
     <script src="thresholdFilter.js"></script>
     <script src="filter.js"></script>
     <script src="faceDetector.js"></script>
+    <script src="mosaic.js"></script>
 
     <!-- main sketch file -->
     <script src="sketch.js"></script>
@@ -36,19 +37,23 @@
       <div id="canvas"></div>
     </div>
     <div id="controls">
+      <h2> Sliders </h2>
       <div class="slider" id="redslider">Red segmentation</div>
       <div class="slider" id="greenslider">Green segmentation</div>
       <div class="slider" id="blueslider">Blue segmentation</div>
       <div class="slider" id="pixelslider">Pixel size</div>
     </div>
     <div class="row" id="instructions">
+      <h2> Instructions </h2>
       <li>To <b>capture webcam image:</b> Press "s" on keyboard.</li>
       <li>To <b>traverse through face filters:</b> Press "1 to 4" on keyboard.
-          <li>1 : Greyscale Filter</li>
-          <li>2 : Blur Filter</li>
-          <li>3 : Color Space Filter</li>
-          <li>4 : Pixelated Filter</li>
+          <ul>1 : Greyscale Filter</ul>
+          <ul>2 : Blur Filter</ul>
+          <ul>3 : Color Space Filter</ul>
+          <ul>4 : Pixelated Filter</ul>
       </li>
     </div>
+    <h2>Snapshot of the program running:</h2>
+    <img src ="example.jpg" alt = "example of a successful run" width="700" height="600">
   </body>
 </html>
