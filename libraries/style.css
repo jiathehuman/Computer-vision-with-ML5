@@ -1,8 +1,9 @@
-h1,h2{
+/* h1,h2{ */
     /* color:whitesmoke;
     text-align: left;
     background-color: #141111; */
-}
+/* } */
+
 
 body{
     margin-left:3%;
@@ -14,6 +15,10 @@ body{
 
 div .slider{
     margin-top: 1%;
+}
+
+#webcam_stream{
+    position:relative;
 }
 
 /* #canvas{

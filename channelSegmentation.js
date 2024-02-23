@@ -18,7 +18,9 @@ function channel(r,g,b, channel)
 }
 
 function channelSegmentation(r,g,b, channel){
-    var redTarget = blueTarget = greenTarget = 0
+    var redTarget = 0
+    var blueTarget = 0
+    var greenTarget = 0
     var altR = altG = altB = 0 
     var threshold = 0;
 

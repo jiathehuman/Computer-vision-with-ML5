@@ -12,7 +12,6 @@
     <script src="./libraries/p5.dom.js"></script>
     <script src="./libraries/face-api.js"></script>
     <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
-    
 
     <!-- scripts for the filters -->
     <script src="helper.js"></script>
@@ -24,8 +23,6 @@
     <script src="thresholdFilter.js"></script>
     <script src="filter.js"></script>
     <script src="faceDetector.js"></script>
-    <script src="cartoonFilter.js"></script>
-
 
     <!-- main sketch file -->
     <script src="sketch.js"></script>
@@ -35,18 +32,23 @@
   </head>
   <body>
     <h1>Graphics Programming Finals</h1>
-    <div id="canvas"></div>
-    <!-- <div id="overlay"></div> -->
-
+    <div class="row">
+      <div id="canvas"></div>
+    </div>
     <div id="controls">
       <div class="slider" id="redslider">Red segmentation</div>
-      <div class="slider" id="greenslider">Blue segmentation</div>
-      <div class="slider" id="blueslider">Green segmentation</div>
+      <div class="slider" id="greenslider">Green segmentation</div>
+      <div class="slider" id="blueslider">Blue segmentation</div>
       <div class="slider" id="pixelslider">Pixel size</div>
-      <div class="slider" id="colorPicker">Colour pickers</div>
     </div>
     <div class="row" id="instructions">
       <li>To <b>capture webcam image:</b> Press "s" on keyboard.</li>
+      <li>To <b>traverse through face filters:</b> Press "1 to 4" on keyboard.
+          <li>1 : Greyscale Filter</li>
+          <li>2 : Blur Filter</li>
+          <li>3 : Color Space Filter</li>
+          <li>4 : Pixelated Filter</li>
+      </li>
     </div>
   </body>
 </html>
