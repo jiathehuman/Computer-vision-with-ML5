@@ -28,7 +28,6 @@ class Picture{
         catch(error){
         console.log(error)
         }
-
     }
 }
 // end of new code

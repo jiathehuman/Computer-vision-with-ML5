@@ -40,36 +40,53 @@ function drawKeypoints(img) {
   // scale(4)
   var thumbY;
   var ringFingerY;
-  for (let i = 0; i < predictions.length; i += 1) {
-    const prediction = predictions[i];
-    thumbY = predictions[0].annotations.thumb[0][1]
-    ringFingerY = predictions[0].annotations.ringFinger[0][1]
+  if(predictions.length < 1) return;
+  thumbY = predictions[0].annotations.thumb[0][1]
+  ringFingerY = predictions[0].annotations.ringFinger[0][1]
 
-    for (let j = 0; j < prediction.landmarks.length; j += 1) {
-      const keypoint = prediction.landmarks[j];
-      fill(255, 255, 0);
-      noStroke();
-      ellipse(keypoint[0], keypoint[1], 10, 10);
+  fill(0)
+  ellipse(predictions[0].annotations.thumb[0][0], predictions[0].annotations.thumb[0][1], 10, 10)
+  ellipse(predictions[0].annotations.ringFinger[0][0], predictions[0].annotations.ringFinger[0][1], 10, 10)
 
-    }
-
-    for (let j = 0; j < prediction.annotations.thumb.length; j += 1) {
-      const keypoint = prediction.annotations.thumb[j];
-      fill(0, 255, 0);
-      noStroke();
-      ellipse(keypoint[0], keypoint[1], 10, 10);
-    }
-  }
 
   if(thumbY > ringFingerY){
     console.log("Thumbs down") 
+    push()
     fill(255,0,0)
-    rect(0,0,100,100)
+    translate(width/2, height/2)
+    rect(0,0,200,700)
+    pop()
   } 
   if(thumbY < ringFingerY){
+
+    push()
+    console.log("Thumbs up") 
     fill(0,255,0)
-    rect(0,0,100,100)
+    translate(width/2, height/2)
+    rect(0,0,200,700)
+    pop()
   }
+
+    // for (let i = 0; i < predictions.length; i += 1) {
+  //   const prediction = predictions[i];
+  //   thumbY = predictions[0].annotations.thumb[0][1]
+  //   ringFingerY = predictions[0].annotations.ringFinger[0][1]
+
+    // for (let j = 0; j < prediction.landmarks.length; j += 1) {
+    //   const keypoint = prediction.landmarks[j];
+    //   fill(255, 255, 0);
+    //   noStroke();
+    //   ellipse(keypoint[0], keypoint[1], 10, 10);
+
+    // }
+
+    // for (let j = 0; j < prediction.annotations.thumb.length; j += 1) {
+    //   const keypoint = prediction.annotations.thumb[j];
+    //   fill(0, 255, 0);
+    //   noStroke();
+    //   ellipse(keypoint[0], keypoint[1], 10, 10);
+    // }
+  // }
 
   
 
