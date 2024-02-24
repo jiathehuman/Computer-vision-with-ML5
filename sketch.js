@@ -96,7 +96,7 @@ function setup() {
   angleMode(DEGREES)
 
   /** start of new code */
-  // frameRate(10);
+  frameRate(10);
   filter = new Filter(); // initialises filter object 
   faceFilter = new FaceFilter(); // initialises faceFilter object
 
@@ -149,6 +149,13 @@ function setup() {
   segmentationGSlider.parent("greenslider");
   segmentationBSlider.parent("blueslider");
   pixelSlider.parent("pixelslider");
+
+  const faceOptions = {
+    withLandMarks: true,
+    withDescriptor: true,
+    minConfidence: 0.5,
+  };
+  faceapi = ml5.faceApi(webcamStream, faceOptions, faceLoaded);
 
   /** end of new code */ 
 }
@@ -211,11 +218,17 @@ function draw() {
   pictures[8].img = filter.processImage(buffer, "blueChannelSegment");
 
   /** if faces are detected */
+  // const faceOptions = {
+  //   withLandMarks: true,
+  //   withDescriptor: true,
+  //   minConfidence: 0.5,
+  // };
+  // faceapi = ml5.faceApi(webcamStream, faceOptions, faceLoaded);
   if (detections.length > 0) {
     for (var f = 0; f < detections.length; f++) {
       // for every face, apply a filter
       let { _x, _y, _width, _height } = detections[0].alignedRect._box; // position and height of face
-      pictures[12].img = faceFilter.processImage(img, _x, _y, _width, _height); // apply the face filter on pictures[12]
+      pictures[12].img = faceFilter.processImage(webcamStream, _x, _y, _width, _height); // apply the face filter on pictures[12]
     }
   }
 
@@ -255,14 +268,14 @@ function keyPressed() {
     https://www.youtube.com/watch?v=3yqANLRWGLo&list=WL&index=1&t=1228s */
 
     buffer = img.get();
-    const faceOptions = {
+    // const faceOptions = {
 
-      withLandMarks: true,
-      withDescriptor: true,
-      minConfidence: 0.5,
-    };
+    //   withLandMarks: true,
+    //   withDescriptor: true,
+    //   minConfidence: 0.5,
+    // };
 
-    faceapi = ml5.faceApi(webcamStream, faceOptions, faceLoaded);
+    // faceapi = ml5.faceApi(webcamStream, faceOptions, faceLoaded);
 
     // HANDPOSE
     handpose = ml5.handpose(webcamStream, modelLoaded);

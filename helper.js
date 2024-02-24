@@ -12,6 +12,7 @@ function gotFaces(error, results) {
   }
   detections = results;
   console.log("Found a face")
+  faceapi.detect(gotFaces)
 }
 
 function modelLoaded(){
