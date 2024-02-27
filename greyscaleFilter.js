@@ -1,9 +1,9 @@
-// code provided on Coursera Week 15, altered
-/** ------------------------------------------------------------------------------------
+ /** ------------------------------------------------------------------------------------
  * GREYSCALE filter
  * Takes in a r, g, b
  * Depending on the r,g,b values, calculate hue, saturation and value.
  * Return the processed r, g, b as h, s, v in an array
+ * based on code provided on Coursera Week 15 (University of London)
  ------------------------------------------------------------------------------------- */
 
 function greyscaleFilter(r,g,b){

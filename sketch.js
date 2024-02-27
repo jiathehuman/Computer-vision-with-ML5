@@ -198,6 +198,7 @@ function draw() {
   text("Extensions", imgWidth * 4, 50);
 
   textSize(14);
+  /** top right text, when string is 'true', user can do thumbs up and down gesture */
   text("* Hand model ready: " + str(modelIsLoaded), imgWidth * 5 - 10, 30);
 
   textSize(15);
@@ -210,7 +211,7 @@ function draw() {
 
 
 
-
+  /** if not all images are loaded */
   if (!imageLoaded) {
     return;
   }
@@ -251,8 +252,10 @@ function draw() {
     console.log(error);
     return;
   }
+
+  /** if a hand is detected on screen, call function to manipulate canvas */
   if (detections.length > 0) {
-    registerHand(img);
+    registerHand();
   }
 
   /** draw the image with cartoon filter */
@@ -272,33 +275,28 @@ function keyPressed() {
     /** Reference for ml5.js face API
     https://www.youtube.com/watch?v=3yqANLRWGLo&list=WL&index=1&t=1228s */
 
-    // if(img){
-    buffer = webcamStream.get(); // buffer is a replica of image
-    // }
+    buffer = webcamStream.get(); // buffer is an instance of the webcam stream
+
 
     // HANDPOSE
-    handpose = ml5.handpose(webcamStream, modelLoaded);
+    handpose = ml5.handpose(webcamStream, modelLoaded); // instantiate
+    // what to do when hands are detected
     handpose.on("hand", (results) => {
-      predictions = results;
+      predictions = results; // predictions populated with hand detected
     });
 
-    // if(typeof(buffer) == array){
-    //   console.log("buffer not loaded");
-    //   return;
-    // }
 
-    // console.log(buffer);
+    /** loads images and increments loadCount */
 
-    /** loads all the images with the webcam image */
+    /** loads all the images with the buffer */
     for (let i = 0; i < pictures.length; i++) {
       pictures[i].loadPicture(buffer);
-      pictures[i].loaded = true;
       loadCount++;
     }
   
+    /** loads all the extension images with the buffer */
     for (let i = 0; i < extensions.length; i++) {
       extensions[i].loadPicture(buffer);
-      extensions[i].loaded = true;
       loadCount++;
     }
 
@@ -309,23 +307,20 @@ function keyPressed() {
     pictures[3].img = filter.processImage(buffer, "redChannel");
     pictures[4].img = filter.processImage(buffer, "greenChannel");
     pictures[5].img = filter.processImage(buffer, "blueChannel");
-    pictures[10].img = filter.processImage(buffer, "hsvColour");
-    pictures[11].img = filter.processImage(buffer, "ycbcrColour");
-    pictures[13].img = filter.processImage(pictures[10].img, "threshold");
-    pictures[14].img = filter.processImage(pictures[11].img, "threshold");
+    pictures[10].img = filter.processImage(buffer, "hsvColour"); // hsv image
+    pictures[11].img = filter.processImage(buffer, "ycbcrColour"); // ycbcr image
+    pictures[13].img = filter.processImage(pictures[10].img, "threshold"); // threshold on hsv image
+    pictures[14].img = filter.processImage(pictures[11].img, "threshold"); // threshold on ycbcr image
     extensions[3].img = filter.processImage(buffer, "popartRed");
     extensions[4].img = filter.processImage(buffer, "popartGreen");
     extensions[5].img = filter.processImage(buffer, "popartBlue");
+    /** cartoon image is a mix of greyscale filter and edge detection filter */
+    cartoonImg = filter.processImage(pictures[1].img, "edge"); 
 
-    cartoonImg = filter.processImage(pictures[1].img, "edge");
-
+    /** checks to see if all pictures are loaded */
     if (loadCount == pictures.length + extensions.length) {
       imageLoaded = true; // when imageLoaded is true, the image is drawn in the draw loop
     }
-  }
-
-  if(keyCode == 70){
-    
   }
 
   /** apply the filter on the face */

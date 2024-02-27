@@ -1,20 +1,34 @@
+/** ----------------------------------------------------------------------------------------
+ * FILTER CLASS
+ * 
+ * processImage() takes in an image and a filtername. It will apply the filter on the image and 
+ * return the altered image.
+ * 
+ * applyFilter() applies a filter on a single pixel, based on filterName.
+ * 
+ * convolution() applies convolution.
+ ------------------------------------------------------------------------------------------ */
+
 function Filter() {
+  /** takes in image and apply the filter */
   this.processImage = function (img, filterName) {
     let imgOut = createImage(imgWidth, imgHeight);
     imgOut.loadPixels();
     img.loadPixels();
 
+    // for each pixel, loop through the x and y coordinates
     for (let x = 0; x < imgOut.width; x++) {
       for (let y = 0; y < imgOut.height; y++) {
         let index = (x + y * imgOut.width) * 4;
-
+        // get original r, g, b values
         let r = img.pixels[index + 0];
         let g = img.pixels[index + 1];
         let b = img.pixels[index + 2];
 
-        let pixelColour = color(r, g, b);
-        let brightnessVal = brightness(pixelColour);
+        let pixelColour = color(r, g, b); // create a p5 color object for the r,g,b values
+        let brightnessVal = brightness(pixelColour); // calculate brightness of that pixel
 
+        /** apply the filter on that pixel */
         let processedPixel = this.applyFilter(
           r,
           g,
@@ -25,21 +39,25 @@ function Filter() {
           brightnessVal
         );
 
+        /** replace the original pixel with the altered pixel */
         imgOut.pixels[index + 0] = processedPixel[0];
         imgOut.pixels[index + 1] = processedPixel[1];
         imgOut.pixels[index + 2] = processedPixel[2];
         imgOut.pixels[index + 3] = processedPixel[3];
       }
     }
-    imgOut.updatePixels();
-    return imgOut;
+    imgOut.updatePixels(); // update the altered image
+    return imgOut; // return the processed image
   };
 
-  /** for each pixel, apply filter and return new pixel */ 
+  /** for each pixel, apply the appropriate filter and return new pixel */
   this.applyFilter = function (r, g, b, filterName, x, y, brightness) {
-    let processedPixel;
-    if (filterName == "greyscale") processedPixel = greyscaleFilter(r, g, b);
-    if (filterName == "redChannel") processedPixel = channel(r, g, b, "red");
+    let processedPixel; // to hold processed pixel values array
+
+    /** depending on the name of filter, apply the appropriate function on that pixel */
+    if (filterName == "greyscale") processedPixel = greyscaleFilter(r, g, b); // greyscale filter
+
+    if (filterName == "redChannel") processedPixel = channel(r, g, b, "red"); 
     if (filterName == "blueChannel") processedPixel = channel(r, g, b, "blue");
     if (filterName == "greenChannel")
       processedPixel = channel(r, g, b, "green");
@@ -57,7 +75,11 @@ function Filter() {
     if (filterName == "ycbcrColour") processedPixel = rgbToYCBCR(r, g, b);
     if (filterName == "threshold") processedPixel = thresholdFilter(r, g, b);
     if (filterName == "blur") processedPixel = blur(img, x, y);
-    if (filterName == "edge") processedPixel = edgeDetectionFilter(img, x, y);
+
+    /** extension */
+    if (filterName == "edge") processedPixel = edgeDetectionFilter(img, x, y); // cartoon image
+
+    /** pop art effect uses lerpFilter function */
     if (filterName == "popartRed")
       processedPixel = lerpFilter(
         color(0, 0, 255),
@@ -77,9 +99,10 @@ function Filter() {
         brightness
       );
 
-    return processedPixel;
+    return processedPixel; // return the pixel array with the altered r,g,b values
   };
 
+  /** convolution function */
   this.convolution = function (x, y, matrix, matrixSize, img) {
     let totalRed = 0.0;
     let totalGreen = 0.0;

@@ -1,5 +1,3 @@
-// reference: https://gist.github.com/avisek/eadfbe7a7a169b1001a2d3affc21052e
-
 /** ------------------------------------------------------------------------------------
  * HSV FILTER
  * Takes in a r, g, b
@@ -12,21 +10,22 @@ function rgbToHSV(r,g,b)
 {
     r /= 255, g/=255, b/=255; // divide all by 255 to normalise
 
-    var rPrime, gPrime, bPrime, hue;
+    var rPrime, gPrime, bPrime, hue; // r,g,b prime and hue
 
-    var max = Math.max(r,g,b);
-    var min = Math.min(r,g,b);
+    var max = Math.max(r,g,b); // maximum among r,g,b values
+    var min = Math.min(r,g,b); // minimum among r,b,b values
 
-    const diff = max - min;
+    const diff = max - min; 
 
-    var saturation = diff / max;
-    var value = max;
+    var saturation = diff / max; // saturation is the difference over max
+    var value = max; // value is max
 
+    /** prime values */
     rPrime = (max - r)/ diff;
     gPrime = (max - g)/ diff;
     bPrime = (max - b)/ diff;
 
-    // to calculate the hue
+    // calculate the hue
     if(saturation == 0) hue = 0;
     else if(r == max && g == min) hue = 5 + bPrime;
     else if(r==max && g!= min) hue = 1 - gPrime;
@@ -35,14 +34,19 @@ function rgbToHSV(r,g,b)
     else if(r == max) hue = 3 + gPrime;
     else hue = 5 - rPrime;
 
-    hue = ((hue * 60) / 360) * 255;
+    // hsv values, altered to 0 - 255
+    let mhue = ((hue * 60) / 360) * 255; // hue was 0 to 360
+
+    // saturation and value was 0 to 0.1
     saturation = (saturation * 100);
     value = (value * 100);
 
+    // saturation and value was from 0 to 100
     let mSaturation = map(saturation, 0, 100, 0, 255);
     let mValue = map(value,0,100,0,255);
 
-    return[hue, mSaturation, mValue, 255]
+    // modified hsv values have values from 0 to 255
+    return[mhue, mSaturation, mValue, 255]
 }
 // end of new code
 

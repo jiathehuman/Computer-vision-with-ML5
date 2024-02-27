@@ -18,9 +18,8 @@ function channel(r,g,b, channel)
         case('blue'):
             altB = b;
             break;
-        
     }
-    return [altR, altG, altB, 255];
+    return [altR, altG, altB, 255]; // return altered r,g,b
 }
 
 /** CHANNEL FUNCTION
@@ -37,8 +36,8 @@ function channelSegmentation(r,g,b, channel){
     var altR = altG = altB = 0 
     var threshold = 0;
 
-    // depending on the channel, get the threshold from sliders
-    // target for that color becomes 255
+    // depending on the channel, get the threshold from slider values
+    // target for that particular color becomes 255
     switch(channel){
         case('red'):
             threshold = segmentationRVal;
@@ -69,5 +68,5 @@ function channelSegmentation(r,g,b, channel){
         altR = altG = altB = dark;
     }
 
-    return[altR, altG, altB, 255]
+    return[altR, altG, altB, 255] // return altered r,g,b
 }

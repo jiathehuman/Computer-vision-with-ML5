@@ -10,15 +10,18 @@ function thresholdFilter(r,g,b){
     var bright = (r + g + b) / 3; // simple
     var threshold = 100;
 
+    // if the brightness is higher than threshold, force it to be white
     if (bright > threshold) {
         altR = 255;
         altG = 255;
         altB = 255;
-    } else {
+    } 
+     // if the brightness is lower than threshold, force it to be black
+    else {
         altR = 0;
         altG = 0;
         altB = 0;
     }
-    return [altR, altG, altB, 255];
+    return [altR, altG, altB, 255]; return array
 }
 // end of code given by coursera
