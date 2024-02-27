@@ -21,7 +21,7 @@ function modelLoaded(){
 }
 
 // A function to draw ellipses over the detected keypoints
-function drawKeypoints(img) {
+function registerHand(img) {
   push();
   // translate(extensions[1].x, extensions[1].y)
   var thumbY;

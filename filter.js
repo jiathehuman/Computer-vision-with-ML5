@@ -1,6 +1,6 @@
 function Filter() {
   this.processImage = function (img, filterName) {
-    let imgOut = createImage(img.width, img.height);
+    let imgOut = createImage(imgWidth, imgHeight);
     imgOut.loadPixels();
     img.loadPixels();
 

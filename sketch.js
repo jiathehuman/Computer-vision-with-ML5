@@ -35,16 +35,20 @@ New code will be indicated with appropriate comments.
 
 let imgWidth = 160,
   imgHeight = 120;
+
 let filter; // filter object to apply filters
-let webcamStream;
-let img; // image captured from webcam, used as base for filters
+let webcamStream; // captured video from webcam
+let img; // image gotten from webcamStream, used as base for filters
 
-let pictures = []; // populate with pictures later
-let extensions = [];
-let imageLoaded = false;
-let loadCount = 0;
-var modelIsLoaded = false;
+let pictures = []; // populated with pictures later
+let extensions = []; // populated with pictures used for extensions later
 
+let imageLoaded = false; // true when all images are loaded
+let loadCount = 0; 
+
+var modelIsLoaded = false; // handpose model
+
+/** text for the pictures */
 let picturesText = [
   ["Regular", "Greyscale", "Regular"],
   ["Red Channel", "Green Channel", "Blue Channel"],
@@ -55,6 +59,7 @@ let picturesText = [
 
 /** sliders */
 let segmentationRSlider, segmentationGSlider, segmentationBSlider, pixelSlider;
+
 /** slider values */
 var segmentationRVal,
   segmentationGVal,
@@ -63,34 +68,27 @@ var segmentationRVal,
   pixelSize;
 
 /** faceapi variables */
-let faceapi;
-let detections = [];
+let faceapi; // faceapi object
+let detections = []; // faces detected
 let faceX, faceY, faceWidth, faceHeight; // store the coordinates of the detected face
 var faceFilterMode = 0; // default is the first greyscale filter
 
-let handpose;
-let predictions = [];
+let handpose; // handpose api
+let predictions = []; // hands detected
 
-var buffer;
-var cartoonImg
+let buffer; // created from img, used for still images
 
-let gui;
-let colorPicker1, colorPicker2;
-
-let poseNet, pose;
-
-// var overlay;
-// var faceImg
 
 /** ----------------------------------------------------------------------------
  * SETUP
  * Creates canvas, initialises Filter and FaceFilter, captures video
  * Creates sliders
+ * Instantiate faceapi
 ---------------------------------------------------------------------------- */
 function setup() {
-  const canvas = createCanvas(imgWidth * 7 + 10, imgHeight * 8);
+  const canvas = createCanvas(imgWidth * 7 + 10, imgHeight * 8); // canvas to draw on
   canvas.elt.setAttribute("willReadFrequently", "true");
-  canvas.parent("canvas");
+  canvas.parent("canvas"); 
 
   pixelDensity(1); // makes sure it renders correctly on different screens
   angleMode(DEGREES)
@@ -118,7 +116,7 @@ function setup() {
     }
   }
 
-  /** extension: 2 rows x 3 columns */ 
+  /** extension: 2 rows x 3 columns of Picture objects */ 
   for (var i = 0; i < 2; i++) {
     for (var j = 0; j < 3; j++) {
       var start_x = imgWidth * 3;
@@ -133,7 +131,7 @@ function setup() {
     }
   }
 
-  /** img continuously gets from webcam stream */
+  /** img continuously created from webcam stream */
   img = createImage(imgWidth, imgHeight);
   /** buffer will contain 1 snapshot from img ^ */
   buffer = createImage(imgWidth, imgHeight);
@@ -150,11 +148,14 @@ function setup() {
   segmentationBSlider.parent("blueslider");
   pixelSlider.parent("pixelslider");
 
+  /** options for face detection */
   const faceOptions = {
     withLandMarks: true,
     withDescriptor: true,
     minConfidence: 0.5,
   };
+
+  /** instantiate face api */
   faceapi = ml5.faceApi(webcamStream, faceOptions, faceLoaded);
 
   /** end of new code */ 
@@ -173,9 +174,26 @@ function draw() {
   // start of new code
   background(20, 10, 30);
   img = webcamStream.get();
-  image(webcamStream, imgWidth*6 + 10, 0)
+  image(webcamStream, imgWidth*6 + 10, 0) // places webcamStream at top right
 
+  
+
+  /** Draw the text on canvas */
   fill(255);
+
+  /** Text for required filters */
+  textSize(15);
+  for (var i = 0; i < picturesText.length; i++) {
+    for (var j = 0; j < picturesText[i].length; j++) {
+      text(
+        picturesText[i][j] + "  ↓ ",
+        20 + j * imgWidth,
+        40 + i * (imgHeight + 50)
+      );
+    }
+  }
+
+  /** Text for extensions */
   textSize(25);
   text("Extensions", imgWidth * 4, 50);
 
@@ -190,15 +208,7 @@ function draw() {
   text("Mosaic effect" + "  ↓ ", imgWidth * 3 + 30, imgHeight * 3 + 50);
   text("Postal sticker effect" + "  ↓ ", imgWidth * 4 + 10, imgHeight * 3 + 50);
 
-  for (var i = 0; i < picturesText.length; i++) {
-    for (var j = 0; j < picturesText[i].length; j++) {
-      text(
-        picturesText[i][j] + "  ↓ ",
-        20 + j * imgWidth,
-        40 + i * (imgHeight + 50)
-      );
-    }
-  }
+
 
 
   if (!imageLoaded) {
@@ -218,17 +228,14 @@ function draw() {
   pictures[8].img = filter.processImage(buffer, "blueChannelSegment");
 
   /** if faces are detected */
-  // const faceOptions = {
-  //   withLandMarks: true,
-  //   withDescriptor: true,
-  //   minConfidence: 0.5,
-  // };
-  // faceapi = ml5.faceApi(webcamStream, faceOptions, faceLoaded);
-  if (detections.length > 0) {
-    for (var f = 0; f < detections.length; f++) {
-      // for every face, apply a filter
-      let { _x, _y, _width, _height } = detections[0].alignedRect._box; // position and height of face
-      pictures[12].img = faceFilter.processImage(webcamStream, _x, _y, _width, _height); // apply the face filter on pictures[12]
+
+  if (detections.length > 0) { // if face(s) are detected
+    for (var f = 0; f < detections.length; f++) { // for each face
+      /** get the top left position, width and height of face */
+      let { _x, _y, _width, _height } = detections[0].alignedRect._box; 
+
+      /** apply the face filter on pictures[12]*/
+      pictures[12].img = faceFilter.processImage(webcamStream, _x, _y, _width, _height); 
     }
   }
 
@@ -244,18 +251,16 @@ function draw() {
     console.log(error);
     return;
   }
-
-
-  image(cartoonImg, extensions[0].x, extensions[0].y)
-  // faceFilter.faceLandmarks(buffer, detections, extensions[3].x, extensions[3].y);
-
-
   if (detections.length > 0) {
-    drawKeypoints(buffer)
+    registerHand(img);
   }
 
-  mosaic(buffer, extensions[3].x, extensions[3].y + imgHeight + 50);
-  rectangleInt(buffer, extensions[4].x, extensions[3].y + imgHeight + 50)
+  /** draw the image with cartoon filter */
+  image(cartoonImg, extensions[0].x, extensions[0].y)
+
+  /** call the mosaic and postalImg filters, which also draws the filtered image */
+  mosaic(buffer, extensions[3].x, extensions[3].y + imgHeight + 50); 
+  postalImg(buffer, extensions[4].x, extensions[3].y + imgHeight + 50)
 
 }
 // end of new code
@@ -267,21 +272,22 @@ function keyPressed() {
     /** Reference for ml5.js face API
     https://www.youtube.com/watch?v=3yqANLRWGLo&list=WL&index=1&t=1228s */
 
-    buffer = img.get();
-    // const faceOptions = {
-
-    //   withLandMarks: true,
-    //   withDescriptor: true,
-    //   minConfidence: 0.5,
-    // };
-
-    // faceapi = ml5.faceApi(webcamStream, faceOptions, faceLoaded);
+    // if(img){
+    buffer = webcamStream.get(); // buffer is a replica of image
+    // }
 
     // HANDPOSE
     handpose = ml5.handpose(webcamStream, modelLoaded);
     handpose.on("hand", (results) => {
       predictions = results;
     });
+
+    // if(typeof(buffer) == array){
+    //   console.log("buffer not loaded");
+    //   return;
+    // }
+
+    // console.log(buffer);
 
     /** loads all the images with the webcam image */
     for (let i = 0; i < pictures.length; i++) {
@@ -296,17 +302,17 @@ function keyPressed() {
       loadCount++;
     }
 
-    /** calls a filter on the different images */
+
+
+    /** calls a filter on the buffer */
     pictures[1].img = filter.processImage(buffer, "greyscale");
     pictures[3].img = filter.processImage(buffer, "redChannel");
     pictures[4].img = filter.processImage(buffer, "greenChannel");
     pictures[5].img = filter.processImage(buffer, "blueChannel");
     pictures[10].img = filter.processImage(buffer, "hsvColour");
     pictures[11].img = filter.processImage(buffer, "ycbcrColour");
-    // pictures[12].img = buffer;
     pictures[13].img = filter.processImage(pictures[10].img, "threshold");
     pictures[14].img = filter.processImage(pictures[11].img, "threshold");
-
     extensions[3].img = filter.processImage(buffer, "popartRed");
     extensions[4].img = filter.processImage(buffer, "popartGreen");
     extensions[5].img = filter.processImage(buffer, "popartBlue");
@@ -316,6 +322,10 @@ function keyPressed() {
     if (loadCount == pictures.length + extensions.length) {
       imageLoaded = true; // when imageLoaded is true, the image is drawn in the draw loop
     }
+  }
+
+  if(keyCode == 70){
+    
   }
 
   /** apply the filter on the face */

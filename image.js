@@ -29,7 +29,7 @@ class Picture {
     try {
       image(this.img, this.x, this.y);
     } catch (error) {
-      console.log(error);
+      console.log("show image failed")
     }
   }
 }
