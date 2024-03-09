@@ -236,7 +236,7 @@ function draw() {
       let { _x, _y, _width, _height } = detections[0].alignedRect._box; 
 
       /** apply the face filter on pictures[12]*/
-      pictures[12].img = faceFilter.processImage(webcamStream, _x, _y, _width, _height); 
+        pictures[12].img = faceFilter.processImage(webcamStream, _x, _y, _width, _height); 
     }
   }
 
@@ -254,9 +254,23 @@ function draw() {
   }
 
   /** if a hand is detected on screen, call function to manipulate canvas */
-  if (detections.length > 0) {
+  if (predictions.length > 0) {
     registerHand();
   }
+
+  if(detections.length > 0){
+    if(faceFilterMode == 0){
+      let { _x, _y, _width, _height } = detections[0].alignedRect._box; 
+      push();
+      translate(pictures[12].x, pictures[12].y);
+      strokeWeight(3);
+      stroke(255,0,0);
+      noFill();
+      rect(_x, _y, _width, _height);
+      pop();
+    }
+  }
+
 
   /** draw the image with cartoon filter */
   image(cartoonImg, extensions[0].x, extensions[0].y)
