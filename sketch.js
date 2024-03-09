@@ -329,7 +329,7 @@ function keyPressed() {
     extensions[4].img = filter.processImage(buffer, "popartGreen");
     extensions[5].img = filter.processImage(buffer, "popartBlue");
     /** cartoon image is a mix of greyscale filter and edge detection filter */
-    cartoonImg = filter.processImage(pictures[1].img, "edge"); 
+    cartoonImg = filter.processImage(img, "edge"); 
 
     /** checks to see if all pictures are loaded */
     if (loadCount == pictures.length + extensions.length) {
