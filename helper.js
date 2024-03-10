@@ -118,7 +118,7 @@ function edgeDetectionFilter(img, x, y){
     var line
 
     // if the values are significant, return a black pixel
-    if(combo < 450){ 
+    if(combo < 400){ 
       alpha = map(combo, 0, 450, 0, 255)
       line = 0
     }
