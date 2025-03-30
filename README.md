@@ -29,9 +29,9 @@ To traverse through face filters (Lower Left box): Press "1 to 4" on keyboard.
 4 : Pixelated Filter
 
 ## Detecting facial boundaries
-By processing the pixels within the detected facial boundaries, we can apply a filter over our faces.
+By processing the pixels within the detected facial boundaries, we can apply a filter over our faces. <br>
 ![image](https://github.com/user-attachments/assets/c954e4a4-aa6d-496c-a8ef-a725ffeca39e)
 
 ## Detecting hand gestures
-By detecting the position between the ring finger and the thumb, we can deduce whether the hand is doing a thumbs up or thumbs down gesture.
+By detecting the position between the ring finger and the thumb, we can deduce whether the hand is doing a thumbs up or thumbs down gesture. <br>
 ![image](https://github.com/user-attachments/assets/0237cc29-a1c7-405b-91e8-839963bcafc4)
