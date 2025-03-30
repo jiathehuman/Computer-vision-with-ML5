@@ -3,14 +3,14 @@ This is a project done in fulfilment of CM2025 Graphics Programming module. The 
 
 **Live View**: https://jiathehuman.github.io/Computer-vision-with-ML5/
 
-## 📢 Key Features
+## 📢  Key Features
 
 - Image processing techniques such as colour segmentation and colour lerping
 - Motion detection
 - Hand gestures (thumb up, thumb down) detection with ML5's HandPose API
 - Face detection with ML5's pre-trained FaceAPI
 
-## **Instructions**
+## ⌨️  Instructions
 Start: Press "s" on keyboard to start the program. <br>
 To traverse through face filters (Lower Left box): Press "1 to 4" on keyboard. <br>
 1 : Greyscale Filter <br>
@@ -18,14 +18,14 @@ To traverse through face filters (Lower Left box): Press "1 to 4" on keyboard. <
 3 : Color Space Filter <br>
 4 : Pixelated Filter <br>
   
-## 🤖 Technical Highlights
+## 🤖  Technical Highlights
 
 Through this project, I learned how to use pre-trained APIs, how to synthesise graphics and how to process visual signals. I learned about the mathematical ideas that underpin digital representations of graphics. I also learned the basics of working with simulated physics by creating a Snooker ssimulator. (Check <a href = "https://github.com/jiathehuman/snooker-game-with-matterjs">here</a>.)
 
-## 💡 Future Plans <br>
+## 💡  Future Plans <br>
 Looking ahead, I plan to use ML5's Body Pose API to create more interactive features.
 
-## 🧐 Example <br>
+## 🧐  Example <br>
 ![image](https://github.com/user-attachments/assets/fbb2b748-514b-46a8-b950-5442c4fa0d67)
 
 
