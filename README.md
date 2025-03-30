@@ -11,12 +11,12 @@ This is a project done in fulfilment of CM2025 Graphics Programming module. The 
 - Face detection with ML5's pre-trained FaceAPI
 
 ## **Instructions**
-Start: Press "s" on keyboard to start the program.
-To traverse through face filters (Lower Left box): Press "1 to 4" on keyboard.
-1 : Greyscale Filter
-2 : Blur Filter
-3 : Color Space Filter
-4 : Pixelated Filter
+Start: Press "s" on keyboard to start the program. <br>
+To traverse through face filters (Lower Left box): Press "1 to 4" on keyboard. <br>
+1 : Greyscale Filter <br>
+2 : Blur Filter <br>
+3 : Color Space Filter <br>
+4 : Pixelated Filter <br>
   
 ## 🤖 Technical Highlights
 
